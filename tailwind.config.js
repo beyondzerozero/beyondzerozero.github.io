@@ -43,7 +43,7 @@ module.exports = {
                 18: '4.5rem', // 72px
             },
             fontFamily: {
-                sans: ["'Poppins', sans-serif"],
+                sans: ["'NanumBarunGothic', sans-serif"],
             },
             fontSize: {
                 lead: '2.45rem', // 40px
