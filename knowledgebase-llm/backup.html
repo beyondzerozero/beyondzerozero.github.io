@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="ko" class="light-style docs-page layout-menu-fixed-offcanvas" data-assets-path="assets/">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <title> 1장 시작하기 | LLM 개발입문 - 생성형 대규모언어모델의 구현과 평가방법 강좌 </title>
+
+        <meta name="description" content="LLM 개발입문 강좌입니다.">
+        <meta name="keywords" content="LLM, AI, 생성형AI, LLM개발, Python, 파이썬, 트랜스포머, RAG, 검색증강생성, ">
+
+        <!-- Canonical SEO -->
+        <link rel="canonical" href="https://gaebal.site/knowledgebase-llm">
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-KVT4KT39');</script>
+        <!-- End Google Tag Manager -->
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="assets/img/user1.png" sizes="any" />
+        <!-- Fonts -->
+        <link href="public/font.css" rel="stylesheet">
+
+        <!-- Icons -->
+        <link rel="stylesheet" href="public/remixicon.css">
+
+        <!-- Core CSS -->
+        <link rel="stylesheet" href="public/core.css">
+        <link rel="stylesheet" href="public/demo.css">
+        <link rel="stylesheet" href="public/docs.css">
+
+        <!-- Vendors CSS -->
+        <link rel="stylesheet" href="public/perfect-scrollbar.css">
+        <link rel="stylesheet" href="public/node-waves.css">
+        <link rel="stylesheet" href="public/highlight.css">
+        <link rel="stylesheet" href="public/docsearch.min.css">
+
+        <!-- Core JS -->
+        <script src="public/helpers.js"></script>
+        <style type="text/css">
+            .layout-menu-fixed .layout-navbar-full .layout-menu,
+            .layout-menu-fixed-offcanvas .layout-navbar-full .layout-menu {
+            top: 64px !important;
+            }
+            .layout-page {
+            padding-top: 64px !important;
+            }
+            .content-wrapper {
+            padding-bottom: 52.625px !important;
+            }
+        </style>
+        <script src="public/config.js"></script>
+
+    </head>
+
+    <body>
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVT4KT39"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+        <!-- Layout wrapper -->
+        <div class="layout-wrapper layout-navbar-full ">
+            <div class="layout-container">
+        <!-- Navbar main -->
+            <nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center bg-primary" id="layout-navbar">
+                <div class="container-fluid">
+    
+                <!-- Menu toggle demo.css-->
+                <div class="layout-menu-toggle navbar-nav d-lg-none align-items-lg-center">
+                <a class="nav-item nav-link px-0 me-lg-6" href="javascript:void(0)">
+                    <i class="ri-menu-line ri-24px align-middle"></i>
+                </a>
+                </div>
+    
+                <!-- Brand demo demo.css -->
+                <div class="navbar-brand app-brand demo py-0 me-6">
+                    <a href="/knowledgebase-llm/index.html" class="app-brand-link gap-2">
+                        <span class="app-brand-text demo menu-text fw-bold">LLM 개발입문 </span>
+                    </a>
+                </div>
+
+                <div class="navbar-collapse collapse" id="navbar-collapse">
+                <!-- Divider -->
+                    <hr class="d-lg-none w-100 my-2">
+
+                    <div class="navbar-nav align-items-lg-center ms-auto">
+        
+                    <ul class="navbar-nav">
+                        <li class="nav-item me-2">
+                            <a href="https://llmdev.kr/" target="_blank" class="nav-link d-flex align-items-center gap-2"><i class="tf-icons ri-lifebuoy-line"></i>
+                            로컬 LLM 개발의뢰</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://github.com/beyondzerozero" target="_blank" class="nav-link d-flex align-items-center gap-2"><i class="tf-icons ri-gift-line"></i> 
+                            GitHub</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://gaebal.site" target="_blank" class="nav-link"><i class="ri-briefcase-line"></i> 개발사이트</a>
+                        </li>
+                    </ul>
+
+                    <!-- Divider -->
+                    <!-- <div class="nav-item d-none d-lg-block text-big fw-light lh-1 me-4 ms-1">|</div> -->
+                    </div>
+                </div>
+                </div>
+            </nav>
+            <!-- / Navbar main -->
+
+        <!-- Layout page -->
+        <div class="layout-page">
+
+        <!-- Menu -->
+        <aside id="layout-menu" class="layout-menu menu-doc menu menu-vertical bg-menu-theme" data-bg-class="bg-menu-theme" style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+
+  
+  <div class="menu-divider mt-0   d-xl-none ">
+  </div>
+
+
+  <!-- Links -->
+  <ul class="menu-inner py-1 ps ps--active-y">
+    <li class="menu-header small fw-medium">대규모언어모델 입문하기</li>
+    <li class="menu-item" style="">
+        <a href="javascript:void(0)" class="menu-link menu-toggle">
+          <div>1장 시작하기</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item active">
+            <a href="/knowledgebase-llm/index.html" class="menu-link">
+              <div>1.1 Transformers로 자연어 처리 이해하기</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/index01-2.html" class="menu-link">
+              <div>1.2 Transformers의 기본 사용법</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+              <div>1.3 단어 임베딩과 신경망의 기초</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+              <div>1.4 대규모언어모델이란?</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="menu-item" style="">
+        <a href="javascript:void(0)" class="menu-link menu-toggle">
+          <div>2장 Transformer</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item ">
+            <a href="/knowledgebase-llm/#" class="menu-link">
+              <div>2.1 개요</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/#" class="menu-link">
+              <div>2.2 인코더</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+              <div>2.3 인코더/디코더</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+              <div>2.4 디코더</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="menu-item" style="">
+        <a href="javascript:void(0)" class="menu-link menu-toggle">
+          <div>3장 대규모언어모델(LLM)의 기초</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item ">
+            <a href="/knowledgebase-llm/#" class="menu-link">
+              <div>3.1 단어예측을 통해 학습할 수 있는 것들</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/#" class="menu-link">
+              <div>3.2 GPT (디코더)</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+              <div>3.3 BERT, RoBERTa (인코더)</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+              <div>3.4 T5(인코더/디코더)</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+              <div>3.5 다국어모델</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+              <div>3.6 토큰화</div>
+            </a>
+          </li>          
+        </ul>
+      </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/licenses.html" class="menu-link">
+        <div>Licenses</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/folder-structure.html" class="menu-link">
+        <div>Folder Structure</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/quick-start.html" class="menu-link">
+        <div>Quick Start</div>
+        
+
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/config.html" class="menu-link">
+        <div>Config 🤩</div>
+        
+
+      </a>
+    </li>
+    <li class="menu-item active">
+      <a href="/knowledgebase-llm/installation-build.html" class="menu-link">
+        <div>Installation &amp; Build</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/template-customizer.html" class="menu-link">
+        <div>Template Customizer</div>
+        
+
+      </a>
+    </li>
+    <li class="menu-item" style="">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Customization</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/customization-sass.html" class="menu-link">
+            <div>SASS</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/customization-js.html" class="menu-link">
+            <div>JavaScript</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/customization-third-party-plugins.html" class="menu-link">
+            <div>Third Party Plugins</div>
+            
+
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/layouts.html" class="menu-link">
+        <div>Layouts</div>
+        
+
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/dependencies.html" class="menu-link">
+        <div>Dependencies</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/faq.html" class="menu-link">
+        <div>FAQs</div>
+      </a>
+    </li>
+    
+    <!-- Laravel Documentation -->
+    <li class="menu-divider mb-1"></li>
+    <li class="menu-header small fw-medium d-flex flex-row w-100"><span>Laravel</span> <span class="badge badge-demo bg-label-danger ms-2">HTML + Laravel Only</span></li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/laravel-introduction.html" class="menu-link">
+        <div>Laravel Introduction</div>
+      </a>
+    </li>
+
+
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Laravel Overview</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-init-getting-started.html" class="menu-link">
+            <div>Getting Started</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-init-folder-structure.html" class="menu-link">
+            <div>Mix Folder Structure</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-init-vite-folder-structure.html" class="menu-link">
+            <div>Vite Folder Structure</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-init-installation.html" class="menu-link">
+            <div>Installation</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-init-layout.html" class="menu-link">
+            <div>Layout</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-init-configurations.html" class="menu-link">
+            <div>Configurations</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-init-dependencies.html" class="menu-link">
+            <div>Dependencies</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-init-starter-kit-vs-full-version.html" class="menu-link">
+            <div>Starter-kit Vs Full-version</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-init-demo-config.html" class="menu-link">
+            <div>Demo Configs</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Laravel Auth &amp; ACL</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-auth-jetstream.html" class="menu-link">
+            <div>Vite JetStream</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-auth-jetstream-mix.html" class="menu-link">
+            <div>Mix JetStream</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-auth-passport.html" class="menu-link">
+            <div>Laravel Passport</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-auth-sanctum.html" class="menu-link">
+            <div>Laravel Sanctum</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-auth-acl.html" class="menu-link">
+            <div>Laravel ACL</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Laravel Articles</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-articles-database-connections.html" class="menu-link">
+            <div>Database Connections</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-articles-existing-project.html" class="menu-link">
+            <div>Exiting Project Migration</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-articles-create-new-page.html" class="menu-link">
+            <div>Create New Page</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/laravel-articles-form-validation-integration.html" class="menu-link">
+            <div>Form Validation Package Integration</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/laravel-localization.html" class="menu-link">
+        <div>Laravel Localization</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/laravel-menu.html" class="menu-link">
+        <div>Laravel Menu</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/laravel-search.html" class="menu-link">
+        <div>Laravel Search</div>
+      </a>
+    </li>
+
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/laravel-crud.html" class="menu-link">
+        <div>Laravel CRUD</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/laravel-sail-docker.html" class="menu-link">
+        <div>Laravel Sail &amp; Docker</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/laravel-deployment.html" class="menu-link">
+        <div>Laravel Deployment</div>
+      </a>
+    </li>
+
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/laravel-faqs.html" class="menu-link">
+        <div>Laravel FAQs</div>
+      </a>
+    </li>
+    
+
+    
+    <!-- Dotnet Documentation -->
+    <li class="menu-divider mb-1"></li>
+    <li class="menu-header small fw-medium d-flex flex-row w-100"><span>ASP.NET CORE</span> <span class="badge badge-demo bg-label-danger ms-2">Razor Pages</span></li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-introduction.html" class="menu-link">
+        <div>.Net Core Introduction</div>
+      </a>
+    </li>
+
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>.Net Core Overview</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-init-getting-started.html" class="menu-link">
+            <div>.Net Core Getting Started</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-init-folder-structure.html" class="menu-link">
+            <div>.Net Core Folder Structure</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-init-assets-compilation.html" class="menu-link">
+            <div>.Net Core Assets Compilation</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-init-installation.html" class="menu-link">
+            <div>.Net Core Installation</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-init-start-with-doker.html" class="menu-link">
+            <div>.Net Core Start with Docker</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-init-layout.html" class="menu-link">
+            <div>.Net Core Layout</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-init-dependencies.html" class="menu-link">
+            <div>.Net Core Dependencies</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-init-configurations.html" class="menu-link">
+            <div>.Net Core Configurations</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-init-starter-vs-full-version.html" class="menu-link">
+            <div>.Net Core Starter Vs Full Version</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-third-party-libraries.html" class="menu-link">
+        <div>.Net Core Third-party Libraries</div>
+      </a>
+    </li>
+
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>.Net Core Articles</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-articles-create-new-page.html" class="menu-link">
+            <div>Create New Page</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-menu.html" class="menu-link">
+        <div>.Net Core Menu</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-crud.html" class="menu-link">
+        <div>.Net Core CRUD</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-faqs.html" class="menu-link">
+        <div>.Net Core FAQs</div>
+      </a>
+    </li>
+    
+
+    
+    <!-- Dotnet Documentation -->
+    <li class="menu-divider mb-1"></li>
+    <li class="menu-header small fw-medium d-flex flex-row w-100"><span>ASP.NET CORE MVC</span> <span class="badge badge-demo bg-label-danger ms-2">MVC</span></li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-mvc-introduction.html" class="menu-link">
+        <div>.Net Core MVC Introduction</div>
+      </a>
+    </li>
+
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>.Net Core MVC Overview</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-init-getting-started.html" class="menu-link">
+            <div>.Net Core MVC Getting Started</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-init-folder-structure.html" class="menu-link">
+            <div>.Net Core MVC Folder Structure</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-init-assets-compilation.html" class="menu-link">
+            <div>.Net Core MVC Assets Compilation</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-init-installation.html" class="menu-link">
+            <div>.Net Core MVC Installation</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-init-start-with-docker.html" class="menu-link">
+            <div>.Net Core MVC Start with Docker</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-init-layout.html" class="menu-link">
+            <div>.Net Core MVC Layout</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-init-dependencies.html" class="menu-link">
+            <div>.Net Core MVC Dependencies</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-init-configurations.html" class="menu-link">
+            <div>.Net Core MVC Configurations</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-init-starter-vs-full-version.html" class="menu-link">
+            <div>.Net Core MVC Starter Vs Full Version</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-mvc-third-party-libraries.html" class="menu-link">
+        <div>.Net Core MVC Third-party Libraries</div>
+      </a>
+    </li>
+
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>.Net Core MVC Articles</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/net-core-mvc-articles-create-new-page.html" class="menu-link">
+            <div>Create New Page</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-mvc-menu.html" class="menu-link">
+        <div>.Net Core MVC Menu</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-mvc-crud.html" class="menu-link">
+        <div>.Net Core MVC CRUD</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/net-core-mvc-faqs.html" class="menu-link">
+        <div>.Net Core MVC FAQs</div>
+      </a>
+    </li>
+    
+
+    
+    <!-- Django Documentation -->
+    <li class="menu-divider mb-1"></li>
+    <li class="menu-header small fw-medium d-flex flex-row w-100"><span>Django</span> <span class="badge badge-demo bg-label-danger ms-2">Django Only</span></li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/django-introduction.html" class="menu-link">
+        <div>Django Introduction</div>
+      </a>
+    </li>
+
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Django Overview</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-init-getting-started.html" class="menu-link">
+            <div>Django Getting Started</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-init-folder-structure.html" class="menu-link">
+            <div>Django Folder Structure</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-init-installation.html" class="menu-link">
+            <div>Django Installation</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-init-start-with-doker.html" class="menu-link">
+            <div>Django Start with Docker</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-init-layout.html" class="menu-link">
+            <div>Django Layout</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-init-configurations.html" class="menu-link">
+            <div>Django Configurations</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-init-demo-config.html" class="menu-link">
+            <div>Django Demo Config</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-init-starter-kit-vs-full-version.html" class="menu-link">
+            <div>Django Starter Vs Full Version</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-init-dependencies.html" class="menu-link">
+            <div>Django Dependencies</div>
+          </a>
+        </li>
+
+      </ul>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/django-third-party-libraries.html" class="menu-link">
+        <div>Django Third-party Libraries</div>
+      </a>
+    </li>
+
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Django Articles</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-articles-create-new-page.html" class="menu-link">
+            <div>Create New Apps &amp; Pages</div>
+          </a>
+        </li>
+        <!-- <li class="menu-item">
+          <a href="django-articles-existing-project.html" class="menu-link">
+            <div>Exiting Project Migration</div>
+          </a>
+        </li> -->
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-articles-admin-superuser.html" class="menu-link">
+            <div>Django Admin and Create User</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-articles-authentication.html" class="menu-link">
+            <div>Django Authentication</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-articles-permissions-authorization.html" class="menu-link">
+            <div>Django Permissions &amp; Authorization</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-articles-crud.html" class="menu-link">
+            <div>Django CRUD Example</div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/django-articles-admin-db.html" class="menu-link">
+            <div>Django Admin and Database</div>
+          </a>
+        </li>
+
+      </ul>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/django-localization.html" class="menu-link">
+        <div>Django Localization</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/django-menu.html" class="menu-link">
+        <div>Django Menu</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/django-search.html" class="menu-link">
+        <div>Django Search</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/django-theme-api.html" class="menu-link">
+        <div>Django Theme API</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/django-faqs.html" class="menu-link">
+        <div>Django FAQs</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/django-deployment.html" class="menu-link">
+        <div>Django Deployment</div>
+      </a>
+    </li>
+    
+    <!-- Apps & Pages -->
+    <li class="menu-divider mb-1"></li>
+    <li class="menu-header small fw-medium">Design System</li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/typography.html" class="menu-link">
+        <div>Typography</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/colors.html" class="menu-link">
+        <div>Colors</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/Icons.html" class="menu-link">
+        <div>Icons</div>
+      </a>
+    </li>
+
+    <!-- Components -->
+    <li class="menu-divider mb-1"></li>
+    <li class="menu-header small fw-medium">Components</li>
+
+    <!-- UI Elements -->
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>UI Elements</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-accordion.html" class="menu-link">
+            <div>Accordion</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-alerts.html" class="menu-link">
+            <div>Alerts</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-app-brand.html" class="menu-link">
+            <div>App Brand</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-badges.html" class="menu-link">
+            <div>Badges</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-buttons.html" class="menu-link">
+            <div>Buttons</div>
+          </a>
+        </li>
+        <li class="menu-item
+">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <div>Cards</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="/knowledgebase-llm/ui-cards-basic.html" class="menu-link">
+                <div>Basic</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="/knowledgebase-llm/ui-cards-actions.html" class="menu-link">
+                <div>Actions</div>
+                
+
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-carousel.html" class="menu-link">
+            <div>Carousel</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-collapse.html" class="menu-link">
+            <div>Collapse</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-dropdowns.html" class="menu-link">
+            <div>Dropdowns</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-footer.html" class="menu-link">
+            <div>Footer</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-list-groups.html" class="menu-link">
+            <div>List groups</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-modals.html" class="menu-link">
+            <div>Modals</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-menu.html" class="menu-link">
+            <div>Menu</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-navbar.html" class="menu-link">
+            <div>Navbar</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-offcanvas.html" class="menu-link">
+            <div>Offcanvas</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-pagination-breadcrumbs.html" class="menu-link">
+            <div>Pagination &amp; Breadcrumbs</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-popovers.html" class="menu-link">
+            <div>Popovers</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-progress.html" class="menu-link">
+            <div>Progress</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-spinners.html" class="menu-link">
+            <div>Spinners</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-navs.html" class="menu-link">
+            <div>Navs</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-tabs-pills.html" class="menu-link">
+            <div>Tabs &amp; Pills</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-toasts.html" class="menu-link">
+            <div>Toasts</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/ui-tooltips.html" class="menu-link">
+            <div>Tooltips</div>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <!-- Extended components -->
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Extended UI</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-avatar.html" class="menu-link">
+            <div>Avatar</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-blockui.html" class="menu-link">
+            <div>BlockUI</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-drag-and-drop.html" class="menu-link">
+            <div>Drag &amp; Drop</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-media-player.html" class="menu-link">
+            <div>Media Player</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-perfect-scrollbar.html" class="menu-link">
+            <div>Perfect scrollbar</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-star-ratings.html" class="menu-link">
+            <div>Star Ratings</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-sweetalert2.html" class="menu-link">
+            <div>SweetAlert2</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-text-divider.html" class="menu-link">
+            <div>Text Divider</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-timeline.html" class="menu-link">
+            <div>Timeline</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-tour.html" class="menu-link">
+            <div>Tour</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-treeview.html" class="menu-link">
+            <div>Treeview</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/extended-ui-misc.html" class="menu-link">
+            <div>Miscellaneous</div>
+            
+
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <!-- Forms -->
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Forms</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-basic-inputs.html" class="menu-link">
+            <div>Basic Inputs</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-input-groups.html" class="menu-link">
+            <div>Input groups</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-custom-options.html" class="menu-link">
+            <div>Custom Options</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-editors.html" class="menu-link">
+            <div>Editors</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-file-upload.html" class="menu-link">
+            <div>File Upload</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-pickers.html" class="menu-link">
+            <div>Pickers</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-selects.html" class="menu-link">
+            <div>Select &amp; Tags</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-sliders.html" class="menu-link">
+            <div>Sliders</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-switches.html" class="menu-link">
+            <div>Switches</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-extras.html" class="menu-link">
+            <div>Extras</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-validation.html" class="menu-link">
+            <div>Validation</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-wizard.html" class="menu-link">
+            <div>Wizard</div>
+            
+
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/forms-layouts-sticky.html" class="menu-link">
+            <div>Sticky Actions</div>
+            
+
+          </a>
+        </li>
+      </ul>
+    </li>
+    <!-- Tables -->
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/tables-basic.html" class="menu-link">
+        <div>Tables</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/tables-datatables.html" class="menu-link">
+        <div>Datatables</div>
+        
+
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/utilities.html" class="menu-link">
+        <div>Utilities</div>
+      </a>
+    </li>
+
+    <!-- Charts & Maps -->
+    <li class="menu-divider mb-1"></li>
+    <li class="menu-header small fw-medium">Charts &amp; Maps</li>
+
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/charts-apex.html" class="menu-link">
+        <div>Apex Charts</div>
+        
+
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/charts-chartjs.html" class="menu-link">
+        <div>ChartJS</div>
+        
+
+      </a>
+    </li>
+    <li class="menu-item
+">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Maps</div>
+      </a>
+      <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/knowledgebase-llm/maps-leaflet.html" class="menu-link">
+            <div>Leaflet</div>
+
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <!-- Charts & Maps -->
+    <li class="menu-divider mb-1"></li>
+    <li class="menu-header small fw-medium">Others</li>
+    <li class="menu-item">
+      <a href="/knowledgebase-llm/credits.html" class="menu-link">
+        <div>Credits</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="https://pixinvent.ticksy.com/" target="_blank" class="menu-link">
+        <div>Support</div>
+      </a>
+    </li>
+  <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 941px; right: 4px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 307px;"></div></div></ul>
+</aside>
+<!-- / Menu -->
+
+      
+
+      <!-- Content wrapper -->
+      <div class="content-wrapper">
+
+        <!-- Content -->
+        
+          <div class="container-xxl flex-grow-1 container-p-y">
+            
+            
+<div class="row flex-xl-nowrap">
+  <div class="DocSearch-content col-12 col-xl-10 container-p-y">
+    <h2 class="mb-6 doc-page-title">Installation &amp; Build 🛠</h2>
+    <p class="lead">Automate time-consuming or repetitive tasks in your development workflow using Gulp 🥤</p>
+    <hr class="my-12">
+    <div class="alert alert-info mt-6" role="alert">
+      <strong>Info:</strong> Please note, the use of Node, Webpack &amp; Gulp and their advanced settings are totally optional. You can use and customize the template without using them too.
+    </div>
+    <!-- Installation -->
+    <div class="row">
+      <div class="col-12">
+        <h4 id="installation" class="anchor-heading mb-6 fw-bold">Installation<a href="/knowledgebase-llm/installation-build.html#installation" class="anchorjs-link ps-2">#</a></h4>
+        <p>Installing Node &amp; Gulp and running it is super easy in Materialize, please follow these steps and you should be ready to rock 🤘</p>
+        <div class="alert alert-primary mt-6" role="alert">
+          <strong>TIP:</strong> It's recommended to use <strong>YARN</strong> over <strong>NPM</strong>. In a comparison of speed, Yarn is much quicker and faster than most of the npm versions.
+        </div>
+        <ol>
+          <li>First of all, make sure you have installed <a href="https://nodejs.org/en/" target="_blank">Node</a> (LTS). If Node.js is already installed in your system, make sure the installed version is <code>LTS</code> and jump to step 2.</li>
+          <li>Once you have npm installed you can run the following command to install and upgrade <strong>Yarn</strong>. If you want to use <strong>npm</strong> than you can skip this step.</li>
+          <div class="doc-example my-6">
+            <div class="doc-example-content" data-label="Terminal/Command">
+              <div class="doc-clipboard">
+                <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">
+                  Copy
+                </button>
+              </div>
+              <pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes"><span class="hljs-attr">npm</span> <span class="hljs-string">install --global yarn</span></code></pre>
+            </div>
+          </div>
+          <li>Install the Gulp CLI: Open Terminal/Command Prompt and run the following command and wait until it finishes. If you have already installed Gulp CLI, you can skip this step and jump to step 3.</li>
+          <div class="doc-example my-6">
+            <div class="doc-example-content" data-label="Terminal/Command">
+              <div class="doc-clipboard">
+                <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">
+                  Copy
+                </button>
+              </div>
+              <pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes"><span class="hljs-attr">npm</span> <span class="hljs-string">install --global gulp-cli</span></code></pre>
+            </div>
+          </div>
+          <li>Navigate to the Materialize root directory and run following command to install our local dependencies listed in <code>package.json</code>. <br>You can use <code>npm</code> OR <code>yarn</code> as per your preference.</li>
+          <div class="doc-example my-6">
+            <div class="doc-example-content" data-label="Terminal/Command">
+              <div class="doc-clipboard">
+                <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">
+                  Copy
+                </button>
+              </div>
+              <pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes"><span class="hljs-comment"># For Yarn</span>
+<span class="hljs-attr">yarn</span>
+<span class="hljs-comment">
+# For npm</span>
+<span class="hljs-attr">npm</span> <span class="hljs-string">install</span></code></pre>
+            </div>
+          </div>
+          <li>Now, you are ready to run <code>npm</code> tasks, below command will start the server and watch the code using <a href="https://browsersync.io/" target="_blank">browsersync</a>. Open <a href="http://localhost:3000/">http://localhost:3000/</a> to check your development 🚀</li>
+          <div class="doc-example my-6">
+            <div class="doc-example-content" data-label="Terminal/Command">
+              <div class="doc-clipboard">
+                <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">
+                  Copy
+                </button>
+              </div>
+              <pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes"><span class="hljs-comment"># yarn</span>
+<span class="hljs-attr">yarn</span> <span class="hljs-string">serve</span>
+<span class="hljs-comment">
+# npm</span>
+<span class="hljs-attr">npm</span> <span class="hljs-string">run serve</span></code></pre>
+            </div>
+          </div>
+        </ol>
+        <p>The above command will install all the required Node.js modules into the <code>node_modules/</code> directory inside your app folder. While installing this command you may see few warnings, don't worry about that for more details refer to our FAQ <a href="/knowledgebase-llm/faq.html#install-warnings">npm/yarn install warnings</a>.</p>
+      </div>
+    </div>
+
+    <hr class="my-12">
+
+    <!-- VS Code Setup -->
+    <div class="row">
+      <div class="col-12">
+        <h4 id="vscode-setup" class="anchor-heading mb-6 fw-bold">VS Code Setup<a href="/knowledgebase-llm/installation-build.html#vscode-setup" class="anchorjs-link ps-2">#</a></h4>
+        <div class="alert alert-info" role="alert">
+          <strong>Info:</strong> Using VS Code as an Editor is totally optional and non-mandatory to follow, you can also use your preferred editor.
+        </div>
+        <p>Materialize using VS Code as a primary editor. You can find <code>.vscode/</code> folder in your downloaded package. It includes predefined <code>extensions.json</code> and <code>settings.json</code> files for VS Code.</p>
+        <p>Find below steps to start project with VS Code :</p>
+        <ol>
+          <li>Open project folder which contains <code>.vscode/</code> folder in VS Code editor.</li>
+          <li>In VS Code Extensions Tab, search <code>@recommended</code> and Install Workspace Recommended Extensions</li>
+          <li>Follow the installation steps as explained above.</li>
+        </ol>
+        <div class="alert alert-primary mt-6" role="alert">
+          <strong>TIP:</strong> Materialize also using Prettier &amp; ESlint (<code>.eslintignore</code>, <code>.eslintrc.json</code>, <code>.prettierignore</code> and <code>.prettierrc.json</code>) for better code formatting and linting.
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-12">
+
+    <!-- Build -->
+    <div class="row">
+      <div class="col-12">
+        <h4 id="build" class="anchor-heading mb-6 fw-bold">Build<a href="/knowledgebase-llm/installation-build.html#build" class="anchorjs-link ps-2">#</a></h4>
+        <p>Materialize's build system is a simple but powerful solution. It uses NPM scripts for its build system. To utilize the power of Gulp &amp; Webpack to achieve maximum automation to help developers saving their precious time for any kind of manual and repetitive tasks and file changes.</p>
+        <ul>
+          <li>Uses Gulp to compile SCSS and Autoprefix it.</li>
+          <li>Uses Webpack + Babel for transpile &amp; compilation. Use all Webpack features and write your code using the ES6 specification.</li>
+          <li>Easy to configure - just edit <code>build-config.js</code> file. <a href="/knowledgebase-llm/installation-build.html#build-config">Read more</a></li>
+          <li>Separate development and production environments by using <code>gulp-environment</code>. To add environment edit <code>gulp-environment.environments</code> section within <code>package.json</code> file.</li>
+          <li>Easy to extend the build system by adding new Gulp/Webpack tasks.</li>
+        </ul>
+        <p>The following files powers the Gulp &amp; Webpack:</p>
+        <pre class="docs-code"><code class="html hljs language-xml" data-highlighted="yes">📦
+├── 📂 ...
+├── 📂 tasks                                      &gt; Gulp tasks
+│&nbsp;&nbsp; ├── 📄 build.js                                 &gt; Gulp tasks for development build
+│&nbsp;&nbsp; └── 📄 prod.js                                  &gt; Gulp tasks for production build
+├── ...
+├── 📄 .browserslistrc                            &gt; Browserslist config for Autoprefixer
+├── 📄 build-config.js                            &gt; Template build config file 👷
+├── 📄 gulpfile.js                                &gt; Gulpfile 🥤
+├── 📄 index.html                                 &gt; Index page to check all demos
+├── 📄 package.json                               &gt; Heart of Node, contain all npm tasks 🛠
+└── 📄 webpack.config.js                          &gt; Webpack file to transpile &amp; bundle JS files.
+</code></pre>
+
+        <p id="build-config" class="anchor-heading mt-4 fw-bold">Build Config<a href="/knowledgebase-llm/installation-build.html#build-config" class="anchorjs-link ps-2">#</a></p>
+        <p>Materialize use <code>build-config.js</code> for development and production related build configuration. You can use it to set build configuration i.e buildTemplatePath, buildPath, distPath, minify and sourcemap etc...</p>
+        <p>Below is the <code>build-config.js</code> file code which contain useful comments to understand the each properties. Make sure you read them carefully.</p>
+        <div class="doc-example">
+          <div class="doc-example-content" data-label="build-config.js">
+            <div class="doc-clipboard">
+              <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+            </div>
+            <pre class="docs-code"><code class="js hljs language-javascript" data-highlighted="yes"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+  <span class="hljs-attr">base</span>: {
+    <span class="hljs-comment">// Excludes folders relative to `root` directory.</span>
+    <span class="hljs-attr">exclude</span>: [<span class="hljs-string">'html'</span>, <span class="hljs-string">'html-starter'</span>, <span class="hljs-string">'html-demo'</span>, <span class="hljs-string">'dist'</span>, <span class="hljs-string">'build'</span>, <span class="hljs-string">'assets'</span>, <span class="hljs-string">'tasks'</span>, <span class="hljs-string">'node_modules'</span>, <span class="hljs-string">'_temp'</span>],
+
+    <span class="hljs-comment">// Base Path to Serve from using Browser Sync, Currently set to root of the project</span>
+    <span class="hljs-comment">// You can also point to specific folder like 'build/'</span>
+    <span class="hljs-attr">serverPath</span>: <span class="hljs-string">'./'</span>,
+
+    <span class="hljs-comment">// Template/Folder to build for production</span>
+    <span class="hljs-attr">buildTemplatePath</span>: <span class="hljs-string">'html/vertical-menu-template'</span>,
+
+    <span class="hljs-comment">// Folder for production build</span>
+    <span class="hljs-attr">buildPath</span>: <span class="hljs-string">'./build'</span>
+  },
+  <span class="hljs-attr">development</span>: {
+    <span class="hljs-comment">// Build path can be both relative or absolute.</span>
+    <span class="hljs-comment">// Current dist path is `./assets/vendor` which will be used by templates from `html\` directory. Set distPath: './dist' to generate assets in dist folder.</span>
+    <span class="hljs-attr">distPath</span>: <span class="hljs-string">'./assets/vendor'</span>,
+
+    <span class="hljs-comment">// Minify assets.</span>
+    <span class="hljs-attr">minify</span>: <span class="hljs-literal">false</span>,
+
+    <span class="hljs-comment">// Generate sourcemaps.</span>
+    <span class="hljs-attr">sourcemaps</span>: <span class="hljs-literal">true</span>,
+
+    <span class="hljs-comment">// https://webpack.js.org/configuration/devtool/#development</span>
+    <span class="hljs-attr">devtool</span>: <span class="hljs-string">'eval-source-map'</span>,
+
+    <span class="hljs-comment">// Use this option with caution because it will remove entire output directory.</span>
+    <span class="hljs-comment">// Will affect only and `build` command</span>
+    <span class="hljs-attr">cleanDist</span>: <span class="hljs-literal">false</span>
+  },
+  <span class="hljs-attr">production</span>: {
+    <span class="hljs-comment">// Build path can be both relative or absolute.</span>
+    <span class="hljs-comment">// Current dist path is `./assets/vendor` which will be used by templates from `html\` directory. Set distPath: './dist' to generate assets in dist folder.</span>
+    <span class="hljs-attr">distPath</span>: <span class="hljs-string">'./assets/vendor'</span>,
+
+    <span class="hljs-comment">// Minify assets.</span>
+    <span class="hljs-comment">// Note: Webpack will minify js sources in production mode regardless to this option</span>
+    <span class="hljs-attr">minify</span>: <span class="hljs-literal">true</span>,
+
+    <span class="hljs-comment">// Generate sourcemaps.</span>
+
+    <span class="hljs-attr">sourcemaps</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-comment">// https://webpack.js.org/configuration/devtool/#production</span>
+    <span class="hljs-attr">devtool</span>: <span class="hljs-string">'#source-map'</span>,
+
+    <span class="hljs-comment">// Use this option with caution because it will remove entire output directory.</span>
+    <span class="hljs-comment">// Will affect only `build:prod` command</span>
+    <span class="hljs-attr">cleanDist</span>: <span class="hljs-literal">true</span>
+  }
+};
+</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-12">
+
+    <!-- Available Tasks -->
+    <div class="row">
+      <div class="col-12">
+        <h4 id="available-tasks" class="anchor-heading mb-6 fw-bold">Available Tasks<a href="/knowledgebase-llm/installation-build.html#available-tasks" class="anchorjs-link ps-2">#</a></h4>
+        <p>Open command prompt/terminal, go to the Materialize root directory and run <code>yarn {task_name}</code>. For example, To generate build run <code>yarn build</code>.<br> Run a task with specified environment(development/production) just execute the task with <code>--env={environment}</code> option, For example, <code>yarn build --env=production</code>.</p>
+        <div class="alert alert-primary mt-6" role="alert">
+          <strong>Tip:</strong> Use <code>yarn run</code> command to list all predefined npm tasks from <code>package.json</code> file.
+        </div>
+        <p id="development-build" class="anchor-heading fw-bold mt-6">Development build<a href="/knowledgebase-llm/installation-build.html#development-build" class="anchorjs-link ps-2">#</a></p>
+        <p>Development tasks use <code>tasks/build.js</code> and generate compiled assets in <code>assets/vendors</code> folder for development purpose.</p>
+        <div class="alert alert-primary mt-6" role="alert">
+          <strong>Tip:</strong> To generate compiled assets in <code>dist/</code> folder, set <code>distPath: 'dist'</code> in <code>build-config.js</code> file.
+        </div>
+        <p>When you execute build task, it performs the following actions:</p>
+        <ul>
+          <li>Read build config options from <code>build-config.js</code>.</li>
+          <li>Run clean task if <code>cleanDist</code> option is <code>true</code>.</li>
+          <li>Run the following gulp tasks in series:</li>
+          <ul>
+            <li><code>build:css</code> Compile each SCSS files which filename is does not starts with a _ symbol and generate CSS.</li>
+            <li><code>build:js</code> - Collects all .js files which filename is not starting with a _ symbol. Then performs transpile &amp; compilation via Webpack and Babel.</li>
+            <li><code>build:fonts</code> - Collects fonts file which is defined in the <code>tasks/build.js</code> file as <code>FONT_TASKS</code> and copy them from node_modules.</li>
+            <li><code>build:copy</code> - Copies images and other font files</li>
+          </ul>
+        </ul>
+        <p class="mt-6">Task (<code>yarn</code> or <code>gulp</code>) lists for <strong>development</strong> build.</p>
+        <table class="table table-bordered doc-table">
+          <thead>
+            <tr>
+              <th scope="col">Yarn Task</th>
+              <th scope="col">Gulp Task</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row"><code>yarn serve</code></td>
+              <td scope="row"><code>gulp serve</code></td>
+              <td>Run the local node server on <code>serverPath</code> (defined in <code>build-config.js</code>) path.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn watch</code></td>
+              <td scope="row"><code>gulp watch</code></td>
+              <td>Watch files for changes and automatically recompile them when it changed.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn build</code></td>
+              <td scope="row"><code>gulp build</code></td>
+              <td>Compile sources and copy assets.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn build:css</code></td>
+              <td scope="row"><code>gulp build:css</code></td>
+              <td>Compile SCSS sources and generate CSS.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn build:js</code></td>
+              <td scope="row"><code>gulp build:js</code></td>
+              <td>Transpile &amp; Compile JS sources using Webpack.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn build:fonts</code></td>
+              <td scope="row"><code>gulp build:fonts</code></td>
+              <td>Copy fonts from <code>node_module/</code> to <code>fonts/</code> that defined in the <code>tasks/build.js</code>.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn build:copy</code></td>
+              <td scope="row"><code>gulp build:copy</code></td>
+              <td>Copy images, fonts and other assets files.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr class="my-12">
+
+        <p id="production-build" class="anchor-heading fw-bold mt-6">Production build<a href="/knowledgebase-llm/installation-build.html#production-build" class="anchorjs-link ps-2">#</a></p>
+        <p class="mt-6">Production tasks use <code>tasks/prod.js</code> and generate <code>build/</code> folder for production ready html and assets.</p>
+        <p>When you execute production build task, it performs the following actions:</p>
+        <ul>
+          <li>Run all build tasks explained same as above</li>
+          <li>Run the following gulp tasks in series:</li>
+          <ul>
+            <li><code>prodCopyTask</code> tasks will copy html (<code>templatePath</code> only) and assets files to the <code>buildPath</code></li>
+            <li><code>prodRenameTasks</code> tasks will replace the assets path.</li>
+            <li><code>prodUseRefTasks</code> tasks use <code>gulp-useref</code> to concat common js files to <code>core.js</code> to reduce http-requests.</li>
+          </ul>
+        </ul>
+        <div class="alert alert-primary mt-6" role="alert">
+          <strong>Tip:</strong> configure <code>buildTemplatePath</code> to choose template for build purpose i.e vertical-menu-template, horizontal-menu-template from <code>build-config.js</code>.
+        </div>
+        <p>Task (<code>yarn</code> or <code>gulp</code>) lists for <strong>production</strong> build. </p>
+        <table class="table table-bordered doc-table">
+          <thead>
+            <tr>
+              <th scope="col">Yarn Task</th>
+              <th scope="col">Gulp Task</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row"><code>yarn build:prod</code></td>
+              <td scope="row"><code>gulp build --env=production</code></td>
+              <td>Run build task in production environment.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn build:prod:css</code></td>
+              <td scope="row"><code>gulp build:css --env=production</code></td>
+              <td>Run <code>build:css</code> task in production environment.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn build:prod:js</code></td>
+              <td scope="row"><code>gulp build:js --env=production</code></td>
+              <td>Run <code>build:js</code> task in production environment.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn build:prod:fonts</code></td>
+              <td scope="row"><code>gulp build:fonts --env=production</code></td>
+              <td>Run <code>build:fonts</code> task in production environment.</td>
+            </tr>
+            <tr>
+              <td scope="row"><code>yarn build:prod:copy</code></td>
+              <td scope="row"><code>gulp build:copy --env=production</code></td>
+              <td>Run <code>build:copy</code> task in production environment.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-none d-xl-block col-xl-2 doc-sidebar container-p-y">
+    <nav id="vertical-nav" class="navbar p-0">
+      <ul class="doc-sidebar-nav">
+        <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#installation">Installation</a></li>
+        <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#vscode-setup">VS Code Setup</a></li>
+        <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#build">Build</a></li>
+        <ul>
+          <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#build-config">Build config</a></li>
+        </ul>
+        <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#available-tasks">Available Tasks</a></li>
+        <ul>
+          <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#development-build">Development build</a></li>
+          <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#production-build">Production build</a></li>
+        </ul>
+      </ul>
+    </nav>
+  </div>
+
+</div>
+
+          </div>
+          <!-- / Content -->
+
+          
+          <footer class="content-footer footer">
+  <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center text-center py-4">
+    <div>
+      © 2024
+      
+      <a href="https://blog.naver.com/beyond-zero/" class="footer-text fw-medium" target="_blank">ZeR0</a>, Hand-crafted
+      &amp; Made with <span class="text-danger">Damon JW Kim.</span>
+      
+    </div>
+  </div>
+</footer>
+
+        </div>
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    
+    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+    <div class="drag-target" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+    </div>
+    <!-- / Layout wrapper -->
+    <script src="public/jquery.js"></>
+    <script src="public/highlight.js"></script>
+    <script type="text/javascript" id="">console.log("PI:GTM Worked!");</script><script src="public/clipboard.js"></script>
+    
+    <script src="public/popper.js"></script>
+    <script src="public/bootstrap.js"></script>
+    <script src="public/perfect-scrollbar.js"></script>
+    <script src="public/node-waves.js"></script>
+    <script src="public/hammer.js"></script>
+    <script src="public/menu.js"></script>
+    <script type="text/javascript" src="public/docsearch.min.js"></script>
+    <!-- Vendors JS -->
+    
+
+    <!-- Page JS -->
+    <script src="public/docs.js"></script>

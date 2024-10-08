@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ko" class="light-style docs-page layout-menu-fixed-offcanvas" data-assets-path="assets/">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <title> 1장 시작하기 | LLM 개발입문 - 생성형 대규모언어모델의 구현과 평가방법 강좌 </title>
+
+        <meta name="description" content="LLM 개발입문 강좌입니다.">
+        <meta name="keywords" content="LLM, AI, 생성형AI, LLM개발, Python, 파이썬, 트랜스포머, RAG, 검색증강생성, ">
+
+        <!-- Canonical SEO -->
+        <link rel="canonical" href="https://gaebal.site/knowledgebase-llm">
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-KVT4KT39');</script>
+        <!-- End Google Tag Manager -->
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="assets/img/user1.png" sizes="any" />
+        <!-- Fonts -->
+        <link href="public/font.css" rel="stylesheet">
+
+        <!-- Icons -->
+        <link rel="stylesheet" href="public/remixicon.css">
+
+        <!-- Core CSS -->
+        <link rel="stylesheet" href="public/core.css">
+        <link rel="stylesheet" href="public/demo.css">
+        <link rel="stylesheet" href="public/docs.css">
+
+        <!-- Vendors CSS -->
+        <link rel="stylesheet" href="public/perfect-scrollbar.css">
+        <link rel="stylesheet" href="public/node-waves.css">
+        <link rel="stylesheet" href="public/highlight.css">
+        <link rel="stylesheet" href="public/docsearch.min.css">
+
+        <!-- Core JS -->
+        <script src="public/helpers.js"></script>
+        <style type="text/css">
+            .layout-menu-fixed .layout-navbar-full .layout-menu,
+            .layout-menu-fixed-offcanvas .layout-navbar-full .layout-menu {
+            top: 64px !important;
+            }
+            .layout-page {
+            padding-top: 64px !important;
+            }
+            .content-wrapper {
+            padding-bottom: 52.625px !important;
+            }
+        </style>
+        <script src="public/config.js"></script>
+
+    </head>
+
+    <body>
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVT4KT39"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+        <!-- Layout wrapper -->
+        <div class="layout-wrapper layout-navbar-full ">
+            <div class="layout-container">
+        <!-- Navbar main -->
+            <nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center bg-primary" id="layout-navbar">
+                <div class="container-fluid">
+    
+                <!-- Menu toggle demo.css-->
+                <div class="layout-menu-toggle navbar-nav d-lg-none align-items-lg-center">
+                <a class="nav-item nav-link px-0 me-lg-6" href="javascript:void(0)">
+                    <i class="ri-menu-line ri-24px align-middle"></i>
+                </a>
+                </div>
+    
+                <!-- Brand demo demo.css -->
+                <div class="navbar-brand app-brand demo py-0 me-6">
+                    <a href="/knowledgebase-llm/index.html" class="app-brand-link gap-2">
+                        <span class="app-brand-text demo menu-text fw-bold">LLM 개발입문 </span>
+                    </a>
+                </div>
+
+                <div class="navbar-collapse collapse" id="navbar-collapse">
+                <!-- Divider -->
+                    <hr class="d-lg-none w-100 my-2">
+
+                    <div class="navbar-nav align-items-lg-center ms-auto">
+        
+                    <ul class="navbar-nav">
+                        <li class="nav-item me-2">
+                            <a href="https://llmdev.kr/" target="_blank" class="nav-link d-flex align-items-center gap-2"><i class="tf-icons ri-lifebuoy-line"></i>
+                            로컬 LLM 개발의뢰</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://github.com/beyondzerozero" target="_blank" class="nav-link d-flex align-items-center gap-2"><i class="tf-icons ri-gift-line"></i> 
+                            GitHub</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://gaebal.site" target="_blank" class="nav-link"><i class="ri-briefcase-line"></i> 개발사이트</a>
+                        </li>
+                    </ul>
+
+                    <!-- Divider -->
+                    <!-- <div class="nav-item d-none d-lg-block text-big fw-light lh-1 me-4 ms-1">|</div> -->
+                    </div>
+                </div>
+                </div>
+            </nav>
+            <!-- / Navbar main -->
+
+        <!-- Layout page -->
+        <div class="layout-page">
+
+        <!-- Menu -->
+        <aside id="layout-menu" class="layout-menu menu-doc menu menu-vertical bg-menu-theme" data-bg-class="bg-menu-theme" style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+
+  
+  <div class="menu-divider mt-0   d-xl-none ">
+  </div>
+
+
+        <!-- Links -->
+        <ul class="menu-inner py-1 ps ps--active-y">
+            <li class="menu-header small fw-medium">대규모언어모델 입문하기</li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>1장 시작하기</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item active">
+                        <a href="/knowledgebase-llm/index.html" class="menu-link">
+                            <div>1.1 Transformers로 자연어 처리 이해하기</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/index01-2.html" class="menu-link">
+                            <div>1.2 Transformers의 기본 사용법</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+                            <div>1.3 단어 임베딩과 신경망의 기초</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/index01-3.html" class="menu-link">
+                            <div>1.4 대규모언어모델이란?</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>2장 Transformer</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>2.1 개요</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>2.2 인코더</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>2.3 인코더/디코더</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>2.4 디코더</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>3장 대규모언어모델(LLM)의 기초</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>3.1 단어예측을 통해 학습할 수 있는 것들</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>3.2 GPT (디코더)</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>3.3 BERT, RoBERTa (인코더)</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>3.4 T5(인코더/디코더)</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>3.5 다국어모델</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>3.6 토큰화</div>
+                        </a>
+                    </li>          
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>4장 대규모언어모델의 발전</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>4.1 모델의 대규모화와 그 효과</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>4.2 프롬프트에 의한 언어모델케어</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>4.3 정렬의 필요성</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>4.4 지시적 튜닝</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>4.5 인간의 피드백을 통한 강화학습</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>4.6 ChatGPT</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>5장 대규모언어모델의 미세조정</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>5.1 한국어 벤치마크</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>5.2 감정분석모델 구현</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>5.3 감정분석모델의 오류분석</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>5.4 자연어추론, 의미적 유사도 계산, 객관식질문응답 모델 구현</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>5.5 메모리효율적인 미세조정</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>6장 고유표현 인식</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>6.1 고유표현인식이란?</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>6.2 데이터세트, 전처리, 평가지표</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>6.3 고유표현인식모델 구현</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>6.4 어노테이션 도구를 이용한 데이트세트 구축</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>7장 요약문생성</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>7.1 요약생성이란?</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>7.2 데이터세트</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>7.3 평가지표</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>7.4 헤드라인 생성모델 구현</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>7.5 다양한 생성방법을 통한 헤드라인 생성</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>8장 문장 임베딩</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>8.1 문장임베딩이란?</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>8.2 문장임베딩모델 SimCSE</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>8.3 문장임베디드 모델 구현</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>8.4 근접탐색 라이브러리 Faiss를 이용한 검색</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>9장 질문응답</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>9.1 질문응답 시스템구조</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>9.2 데이터세트와 평가지표</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>9.3 퀴즈 맞추기 구현</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>9.4 문서검색모델 구현</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>9.5 문서검색모델과 ChatGPT결합하기</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>10장 성능평가</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>10.1 모델성능평가란?</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>10.2 평가지표를 이용한 자동평가</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>10.3 LLM을 이용한 자동평가</div>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>11장 지시튜닝</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>11.1 지시튜닝이란?</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>11.2 지시튜닝구현</div>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>  
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>12장 선호도 튜닝</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>12.1 선호도튜닝이란?</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>12.2 선호도튜닝구현</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>12.3 선호도튜닝평가</div>
+                        </a>
+                    </li>
+                </ul>
+            </li> 
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>13장 RAG</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>13.1 RAG란?</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>13.2 기본적인 RAG 시스템구현</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>13.3 RAG를 위해 LLM을 지시튜닝하기</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>13.4 RAG 성능평가</div>
+                        </a>
+                    </li>
+                </ul>
+            </li> 
+            <li class="menu-item" style="">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                    <div>14장 분산병렬학습</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item ">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>14.1 분산병렬학습이란?</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>14.2 분산병렬학습의 장점</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/knowledgebase-llm/#" class="menu-link">
+                            <div>14.3 LLM의 분산병렬학습</div>
+                        </a>
+                    </li>
+
+                </ul>
+            </li> 
+    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+    </div>
+    <div class="ps__rail-y" style="top: 0px; height: 941px; right: 4px;">
+        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 307px;"></div>
+    </div>
+</ul>
+</aside>
+<!-- / Menu -->
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+<!-- Content -->
+<div class="container-xxl flex-grow-1 container-p-y">            
+<div class="row flex-xl-nowrap">
+    <div class="DocSearch-content col-12 col-xl-10 container-p-y">
+        <h2 class="mb-6 doc-page-title">1장 시작하기</h2>
+        <p class="lead">이 강좌에서는 대규모언어모델(LLM, Large Language Model)의 기초기술과 이를 이용하여 자연어 처리(natural language processing)의 다양한 작업을 해결하는 방법을 설명합니다.</p>
+        <hr class="my-12">
+        <!-- 1.1 -->
+        <div class="row">
+            <div class="col-12">
+            <h4 id="001" class="anchor-heading mb-6 fw-bold">1.1 Transformers로 자연어 처리 이해하기<a href="/knowledgebase-llm/index.html#001" class="anchorjs-link ps-2">#</a></h4>
+            <p>자연어처리란 인간이 일상적으로 사용하는 언어를 컴퓨터가 어떻게 처리할 것인가를 연구하는 학문입니다. 최근에는 대규모로 훈련된 신경망(nerual network)인 대규모언어모델을 이용한 방법이 자연어 처리의 표준이 되고 있습니다.</p>
+            <p>이 강좌에서는 Python을 사용하여 소스 코드를 작성하고, 신경망 작성에는 표준 라이브러리 중 하나인 PyTorch를 사용합니다. 이 책에서 제공하는 소스 코드는 브라우저에서 Python 코드를 작성 및 실행할 수 있는 Google Colaboratory(Colab)를 사용하여 간단하게 동작시킬 수 있습니다.
+            Colab에서는 Colab 노트북에 셀(cell)을 추가하여 코드를 작성합니다. 셀에는 코드를 기재하는 코드 셀과 Markdown 형식으로 텍스트를 기재할 수 있는 텍스트 셀이 있습니다. 이 강좌의 본문에서는 코드 셀만 사용합니다.
+            본 강좌에서는 셀의 코드와 그 출력에 대해 다음과 같은 형식으로 설명합니다.
+            </p>
+            <div class="doc-example">
+                <div class="doc-example-content" data-label="Colab">
+                <div class="doc-clipboard">
+                    <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                </div>
+<pre class="docs-code"><code class="js hljs language-javascript" data-highlighted="yes">
+In[1]: print("대규모언어모델 입문하기!")
+Out[1]: 대규모언어모델 입문하기!
+</code></pre>
+                </div>  
+            </div>
+                <p></p>
+                <p>
+                    또한, 셀에서 시스템 명령을 실행할 수 있습니다. 시스템 명령은 파이썬 코드와 구분하기 위해 먼저 !를 붙여서 작성하며, Colab에서 사용하는 리눅스 버전을 살펴봅시다.
+                </p>
+            <div class="doc-example my-6">
+                <div class="doc-example-content" data-label="Colab">
+                <div class="doc-clipboard">
+                    <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+In[2]: !cat /etc/os-release | head -n 2
+</code></pre>
+<pre class="docs-code">
+Out[2]: PRETTY_NAME="Ubuntu 22.04.3 LTS"
+        NAME="Ubuntu"
+</pre>
+                </div>
+            </div>
+            <p>
+            이 글의 작성 시점에는 Ubuntu 22.04.3 LTS가 사용되고 있었습니다.되고 있음을 알 수 있다. Colab은 오픈소스 Jupyter 라이브러리와 호환되며, Colab 노트북에서 Jupyter 노트북 형식의 파일(ipynb 파일)을 다운로드하여 원하는 환경에서 실행할 수 있습니다.
+            대규모 언어 모델을 프로그램에서 다루기 위한 표준 라이브러리가 transformers입니다. 이 라이브러리를 개발한 Hugging Face는 2016년에 설립된 회사로, transformers 외에도 데이터셋을 다루는 라이브러리인 datasets와 텍스트 분할을 위한 라이브러리인 tokenizers를 제공하고 있습니다. 
+            또한, 클라우드 상에서 모델과 데이터셋 등을 무료로 공유할 수 있는 Hugging Face Hub를 제공하고 있습니다. 이 강좌에서는 학습한 모든 모델을 Hugging Face Hub에 공개하고 있으며, 아래에서 소개하는 것처럼 transformers에서 쉽게 사용할 수 있도록 하고 있습니다.
+            또한, 데이터세트도 Hugging Face Hub에 공개하여 데이터세트를 통해 사용할 수 있도록 하고 있습니다.
+            먼저 Python의 패키지 매니저인 pip 명령어를 사용하여 transformers를 설치합니다. 한국어를 다루기 위한 라이브러리를 설치하는 “ko” 옵션을 사용하며, 설명할 SentencePiece를 설치하는 “sentencepiece” 옵션, PyTorch와 관련 라이브러리를 설치하는 “torch” 옵션을 지정합니다.
+            </p>
+            <div class="doc-example my-6">
+                <div class="doc-example-content" data-label="Colab">
+                <div class="doc-clipboard">
+                    <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+!pip install transformers[ko,sentencepiece,torch]
+</code></pre>
+                </div>
+            </div>
+            <p>
+                transformers에는 모델을 쉽게 다룰 수 있는 pipelines라는 기능이 있습니다. 여기서 자연어 처리의 주요 작업에 대해 이 강좌에서 구축하는 모델을 실제로 움직이면서 개괄적으로 살펴봅시다. pipelines는 pipeline 함수를 통해 사용합니다.
+            </p>
+            <div class="doc-example my-6">
+                <div class="doc-example-content" data-label="Colab">
+                <div class="doc-clipboard">
+                    <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+from transformers import pipeline
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-12">
+
+        <!-- 문서분류-->
+        <div class="row">
+            <div class="col-12">
+                <h4 id="002" class="anchor-heading mb-6 fw-bold">1.1.1 문서분류<a href="/knowledgebase-llm/index.html#002" class="anchorjs-link ps-2">#</a></h4>
+                <p>
+                문서분류(document classification)는 텍스트를 미리 정해진 레이블로 분류하는 작업입니다. 
+                문서분류의 예로는 뉴스 기사를 자동으로 '스포츠', '엔터테인먼트' 등의 장르로 분류하는 작업이나 메일을 스팸인지 아닌지를 자동으로 판단하는 작업 등이 있습니다. 
+                또한, 텍스트에서 읽을 수 있는 감정을 감지하는 문서 분류를 감정 분석(sentiment analysis)이라고 합니다.
+                </p>
+                <div class="doc-example my-6">
+                    <div class="doc-example-content" data-label="Colab">
+                    <div class="doc-clipboard">
+                        <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                    </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+text_classification_pipeline = pipeline(
+    model="llm-lecture/bert-base-korean-marc_en”
+)
+positive_text = “세상에는 말이 통하지 않아도 감동을 주는 음악이 있습니다.” 
+# positive_text의 극성예측 
+print(text_classification_pipeline(positive_text)[0])
+</code></pre>
+        <div class="doc-example my-6">
+            <div class="doc-example-content" data-label="Output">
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+{'label': 'positive', 'score': 0.9993619322776794}
+</code></pre>
+            </div>
+        </div>  
+
+                    </div>
+                </div>
+                <div class="doc-example my-6">
+                    <div class="doc-example-content" data-label="Colab">
+                    <div class="doc-clipboard">
+                        <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                    </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+# negative_text의 극성예측
+negative_text = “세상에는 말문이 막힐 정도로 끔찍한 음악이 있습니다.” 
+print(text_classification_pipeline(negative_text)[0])
+</code></pre>
+<div class="doc-example my-6">
+    <div class="doc-example-content" data-label="Output">
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+{'label': 'negative', 'score': 0.9636247754096985}
+</code></pre>
+    </div>
+</div>  
+                    </div>
+                </div>
+                <p>
+                    “score"는 예측 확률을 나타내며, 위의 예시에서는 모두 96% 이상의 높은 확률로 적절한 라벨을 예측하고 있습니다.
+                </p>
+            </div>        
+        </div>
+        <hr class="my-12">
+        <!-- 자연어추론-->
+        <div class="row">
+            <div class="col-12">
+                <h4 id="003" class="anchor-heading mb-6 fw-bold">1.1.2 자연어추론<a href="/knowledgebase-llm/index.html#003" class="anchorjs-link ps-2">#</a></h4>
+                <p>
+                자연어 추론(natural language inference, NLI)은 두 텍스트의 논리적 관계를 예측하는 작업입니다. 나중에 구축한 자연어 추론 모델 llm-lecture/bert-base-korean-v1을 구동해 봅시다.
+                </p>
+                <div class="doc-example my-6">
+                    <div class="doc-example-content" data-label="Colab">
+                    <div class="doc-clipboard">
+                        <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                    </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+nli_pipeline = pipeline(model=“llm-lecture/bert-base-korean-v1”) 
+text = “두 사람이 제트기를 보고 있습니다.”
+entailment_text = “두 사람이 제트기를 보고 있습니다.”
+
+# text와 entailment_text의 논리적 관계 예측 
+print(nli_pipeline({“text”: text, “text_pair”: entailment_text}))
+</code></pre>
+        <div class="doc-example my-6">
+            <div class="doc-example-content" data-label="Output">
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+{'label': 'entailment', 'score': 0.9964311122894287}
+</code></pre>
+            </div>
+        </div>  
+                    </div>
+                </div>
+                <div class="doc-example my-6">
+                    <div class="doc-example-content" data-label="Colab">
+                    <div class="doc-clipboard">
+                        <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                    </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+contradiction_text = “두 남자가 날고 있습니다”
+# text와 contradiction_text의 논리적 관계예측 
+print(nli_pipeline({“text”: text, “text_pair”: contradiction_text}))
+</code></pre>
+<div class="doc-example my-6">
+    <div class="doc-example-content" data-label="Output">
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+{'label': 'contradiction', 'score': 0.9990535378456116}
+</code></pre>
+    </div>
+</div>  
+                    </div>
+                </div>
+                <div class="doc-example my-6">
+                    <div class="doc-example-content" data-label="Colab">
+                    <div class="doc-clipboard">
+                        <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                    </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+neutral_text = “두 남자가 하얀색 비행기를 바라보고 있습니다.”
+# text와 neutral_text의 논리적 관계 예측 
+print(nli_pipeline({“text”: text, “text_pair”: neutral_text}))
+</code></pre>
+<div class="doc-example my-6">
+    <div class="doc-example-content" data-label="Output">
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+{'label': 'neutral', 'score': 0.9959145188331604}
+</code></pre>
+    </div>
+</div>  
+                    </div>
+                </div>
+                <p>
+                    “entailment"는 ‘함축’을 의미하며, 위의 예에서 ‘두 남자가 제트기를 보고 있습니다’가 성립한다면 ‘제트기를 보고 있는 사람이 두 명 있습니다’도 성립한다는 관계를 나타냅니다.
+                    "contradiction"은 '모순'으로, '두 남자가 제트기를 보고 있습니다'라는 상황은 '두 남자가 날고 있습니다'와 모순되기 때문에 이 라벨이 예측됩니다. 
+                    “neutral"은 ‘중립’으로, ‘함축’도 ‘모순’도 판단할 수 없는 텍스트 쌍에 부여되는 레이블입니다.
+                </p>
+            </div>        
+        </div>
+        <hr class="my-12">
+        <!-- 의미적 유사도 계산-->
+        <div class="row">
+            <div class="col-12">
+                <h4 id="004" class="anchor-heading mb-6 fw-bold">1.1.3 의미적 유사도 계산<a href="/knowledgebase-llm/index.html#004" class="anchorjs-link ps-2">#</a></h4>
+                <p>
+                    의미적 유사도 계산(semantic textual similarity, STS)은 두 텍스트의 의미 유사도를 점수로 예측하는 작업입니다. 정보 검색이나 여러 텍스트의 내용 정합성을 확인할 때 유용하게 사용할 수 있습니다.
+                    나중에 설명하며 만든 의미적 유사도 계산 모델 llm-lecture/bert-base-korean-v1을 실행해 봅시다. 이 모델은 주어진 두 텍스트의 의미적 유사도를 0에서 5까지의 범위로 예측합니다.
+                </p>
+                <div class="doc-example my-6">
+                    <div class="doc-example-content" data-label="Colab">
+                    <div class="doc-clipboard">
+                        <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                    </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+text_sim_pipeline = pipeline(
+    model=“llm-lecture/bert-base-korean-v1”,
+    function_to_apply=“none”,
+)
+text = “강변에 서핑보드를 들고 있는 사람들이 있습니다.”
+sim_text = “서퍼들이 강둑에 서 있습니다.”
+# text와 sim_text의 유사도 계산
+result = text_sim_pipeline({“text”: text, “text_pair”: sim_text}) 
+print(result[“score”])
+</code></pre>
+        <div class="doc-example my-6">
+            <div class="doc-example-content" data-label="Output">
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+3.5703558921813965
+</code></pre>
+            </div>
+        </div>  
+                    </div>
+                </div>
+                <div class="doc-example my-6">
+                    <div class="doc-example-content" data-label="Colab">
+                    <div class="doc-clipboard">
+                        <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                    </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+dissim_text = “화장실 벽에 검은색 수건이 걸려있습니다.”
+# text와 dissim_text의 유사도를 계산함
+result = text_sim_pipeline({“text”: text, “text_pair”: dissim_text}) 
+print(result[“score”])
+</code></pre>
+<div class="doc-example my-6">
+    <div class="doc-example-content" data-label="Output">
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+0.04162175580859184
+</code></pre>
+    </div>
+</div>  
+                    </div>
+                </div>
+
+                <p>
+                    내용이 비슷한 텍스트 쌍을 입력한 경우 약 3.6, 관련이 없는 쌍에 대해서는 0에 가까운 값이 출력됩니다.
+                    또한, 나중에 설명하며 텍스트의 의미를 벡터로 표현하는 문장 임베딩(sentence embedding) 모델을 소개합니다. 
+                    이 모델에서 얻은 텍스트 벡터의 코사인 유사도를 의미적 유사도로 간주할 수 있습니다. 나중에 만든 문장 임베딩 모델 llm-lecture/bert-base-korean-v1-unsup-simcse을 사용하여 의미적 유사도를 계산해 봅시다.
+                </p>
+                <div class="doc-example my-6">
+                    <div class="doc-example-content" data-label="Colab">
+                    <div class="doc-clipboard">
+                        <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                    </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+from torch.nn.functional import cosine_similarity
+
+sim_enc_pipeline = pipeline(
+    model=“llm-book/bert-base-korean-v1-unsup-simcse”,
+    task=“feature-extraction”,
+)
+# text 및 sim_text의 백터 가져오기
+text_emb = sim_enc_pipeline(text, return_tensors=True)[0][0] 
+sim_emb = sim_enc_pipeline(sim_text, return_tensors=True)[0][0]
+# text 및 sim_text의 유사도 계산
+sim_pair_score = 코사인_유사도(text_emb, sim_emb, dim=0) 
+print(sim_pair_score.item())
+</code></pre>
+<div class="doc-example my-6">
+    <div class="doc-example-content" data-label="Output">
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+0.8568589687347412
+</code></pre>
+    </div>
+</div>  
+                    </div>
+                </div>
+                <div class="doc-example my-6">
+                    <div class="doc-example-content" data-label="Colab">
+                    <div class="doc-clipboard">
+                        <button type="button" class="btn-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy to clipboard">Copy</button>
+                    </div>
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+# dissim_text 벡터 가져오기 
+dissim_emb = sim_enc_pipeline(dissim_text, return_tensors=True)[0][0] # text와 dissim_text의 유사도 계산함 
+dissim_pair_score = cosine_similarity(text_emb, dissim_emb, dim=0) 
+print(dissim_pair_score.item())
+</code></pre>
+<div class="doc-example my-6">
+    <div class="doc-example-content" data-label="Output">
+<pre class="docs-code"><code class="properties hljs language-properties" data-highlighted="yes">
+0.45887047052383423
+</code></pre>
+    </div>
+</div>  
+                    </div>
+                </div>
+                <p>
+                    코사인 유사도 값의 범위는 -1에서 1까지입니다. 내용이 유사한 텍스트 쌍을 입력한 경우 약 0.86, 관련이 없는 쌍의 경우 약 0.46으로 의미의 근접성에 따른 값을 얻을 수 있습니다.
+                </p>
+
+
+            </div>        
+        </div>
+        <hr class="my-12">
+
+
+
+    </div>
+</div>
+
+<div class="d-none d-xl-block col-xl-2 doc-sidebar container-p-y">
+    <nav id="vertical-nav" class="navbar p-0">
+    <ul class="doc-sidebar-nav">
+        <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#001">1.1 Transformers로 자연어 처리 이해하기</a></li>
+        <ul>
+            <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#002">1.1.1 문서분류</a></li>
+            <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#003">1.1.2 자연어추론</a></li>
+            <li class="doc-entry doc-h2"><a class="nav-link" href="/knowledgebase-llm/index.html#004">1.1.3 의미적 유사도 계산</a></li>
+        </ul>
+
+    </ul>
+    </nav>
+</div>
+
+
+
+</div>
+<!-- / Content -->
+</div>
+
+<footer class="content-footer footer">
+    <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center text-center py-4">
+        <div>© 2024 <a href="https://blog.naver.com/beyond-zero/" class="footer-text fw-medium" target="_blank">ZeR0</a>, Hand-crafted &amp; Made with <span class="text-danger">Damon JW Kim.</span></div>
+    </div>
+</footer>
+
+</div>
+<!-- Content wrapper -->
+</div>
+<!-- / Layout page -->
+</div>
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+<!-- Drag Target Area To SlideIn Menu On Small Screens -->
+<div class="drag-target" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+</div>
+    <!-- / Layout wrapper -->
+    <script src="public/jquery.js"></script>
+    <script src="public/highlight.js"></script>
+    <script src="public/clipboard.js"></script>
+    <script src="public/popper.js"></script>
+    <script src="public/bootstrap.js"></script>
+    <script src="public/perfect-scrollbar.js"></script>
+    <script src="public/node-waves.js"></script>
+    <script src="public/hammer.js"></script>
+    <script src="public/menu.js"></script>
+    <script type="text/javascript" src="public/docsearch.min.js"></script>
+    <script src="public/docs.js"></script>
