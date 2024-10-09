@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>안드로이드 앱 엔지니어용 Gradle 입문</title>
+    <!-- Favicon-->
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <!-- Plugins Core Css -->
+    <link href="assets/css/app.min.css" rel="stylesheet">
+    <!-- Custom Css -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/prism.css" rel="stylesheet" />
+    <!-- You can choose a theme from css/styles instead of get all themes -->
+    <link href="assets/css/styles/theme-white.css" rel="stylesheet" />
+            <!-- Google Tag Manager -->
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-KVT4KT39');</script>
+                <!-- End Google Tag Manager -->
+</head>
+
+<body class="menu_dark theme-white logo-black submenu-closed">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KVT4KT39"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30">
+                <img class="loading-img-spin" src="assets/images/loading.png" width="20" height="20" alt="admin">
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="index.html"><span
+                        class="logo-name">Gradle 입문</span></a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown user_profile">
+                        <p class="col-blue m-r-20">V 1.0</p>
+                    </li>
+                    <li class="dropdown user_profile m-r-20">
+                        <form action="https://gaebal.site" method="get" target="_blank">
+                            <button type="submit" class="btn bg-blue waves-effect">Gaebal.site</button>
+                        </form>
+                    </li>
+                    <li class="dropdown user_profile m-r-20">
+                        <form action="https://blog.naver.com/beyond-zero" method="get" target="_blank">
+                            <button type="submit" class="btn bg-orange waves-effect">블로그</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+    <section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                    <li class="active">
+                        <a href="#line1">
+                            
+                            <span>1. Gradle의 기초</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#line2">
+                            
+                            <span>2. Gradle의 다중프로젝트 구성</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#line3">
+                            
+                            <span>3. Gradle Plugin 기초</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#line4">
+                            
+                            <span>4. 안드로이드앱에서 Gradle의 기초</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#line5">
+                            <span>5. Gradle을 활용한 Now in Android 앱 빌드</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#line6">
+
+                            <span>6. 참고자료</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix" id="line1">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>1. Gradle의 기초</strong></h2>
+                        </div>
+                        <div class="body">
+                            <div class="card-block">
+                                <p class="card-text">Android 앱 빌드 시스템에는 Gradle 이 채택되었습니다.
+                                    대규모의 복잡한 프로젝트에도 대응할 수 있는 유연하고 강력한 빌드 툴입니다. 그러나 기능이 너무 많아 파악하기 어렵고, 취급하기 어려움을 느낄 수 있을지도 모릅니다.
+                                    이 문서에서는 Android 앱 개발과 관련된 부분을 좁히고 Gradle의 기본 기능을 설명합니다.</p>
+                                <br>
+                                <h4>대상독자</h4>
+                                <ul>
+                                    <li><strong>Android앱 개발자</strong></li>
+                                    <li><strong>Gradle 사용하고 싶은 독자</strong></li>
+                                </ul>        
+                                <br>
+                                <h4>전제환경</h4>
+                                <ul>
+                                    <li><strong>macOS Sonoma 14.6.1</strong></li>
+                                    <li><strong>Gradle 8.10.1</strong></li>
+                                    <li><strong>Android Studio Koala Feature Drop | 2024.1.2 </strong></li>
+                                    <li><strong>Android Gradle Plugin 8.6.0</strong></li>                                 
+                                </ul>   
+                                <br>
+                                <div class="intro1">
+                                    <ul>
+                                        <li><strong>작성자 : </strong>김재우 (Damon JW Kim)
+                                        </li>
+                                        <li><strong>버전 : </strong> v 1.0.0</li>
+                                        <li><strong>생성일 : </strong>2024-08-12</li>
+                                        <li><strong>수정일 : </strong>2024-09-10</li>
+                                        <li><strong>이메일: </strong><a href="mailto:beyond-zero@naver.com">beyond-zero@naver.com</a></li>
+                                    </ul>
+                                </div>
+                                <br><br>
+                                <h4>Gradle 설치</h4>
+                                <p class="card-text">
+                                Gradle을 단독으로 취급하는 경우에는, 미리 Gradle을 인스톨 해 두면 편리합니다.
+                                공식 문서에 <a href="https://gradle.org/install/" target="_blank">설치방법</a>이 기재되어 있지만, macOS 사용자의 경우는 Homebrew의 이용이 간편합니다.</p>
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+$ brew install gradle
+$ gradle -v          
+                                        
+Welcome to Gradle 8.10.2!
+                                    </code>
+                                </pre>
+                                </div>
+                                <br>
+                                <p class="card-text">(Android 앱의 경우 프로젝트를 만들 때 Gradle도 설정되므로이 단계는 필요하지 않습니다.)
+                                다른 설치 방법은 <a href="https://gradle.org/install/" target="_blank">공식문서</a>를 참조하십시오.</p>
+                                <br><br>
+                                <h4>Gradle 프로젝트 만들기</h4>
+                                <p class="card-text">
+                                    새로운 Gradle 프로젝트를 만들려면 gradle init명령을 사용합니다.</p>
+                                    <div class="body">
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+$ mkdir hello
+$ cd hello
+$ gradle init --type basic --dsl kotlin
+                                        </code>
+                                    </pre>
+                                    </div>
+                                    <br>
+                                    <p class="card-text">gradle init실행 중에 몇 가지 질문을 받지만 기본값을 그대로(아무것도 입력하지 않고 Enter)로 작성을 진행합니다.
+                                        다음과 같은 디렉토리 구성의 Gradle 프로젝트가 생성됩니다.</p>
+                                        <div class="body">
+                                            <pre class=" language-html">
+                                            <code class=" language-html">
+                                                hello
+                                                ├── ⋮
+                                                ├── gradle  --- [A]
+                                                │   ├── ⋮
+                                                │   └── wrapper
+                                                │       └── ⋮
+                                                ├── gradlew      --- [B1]
+                                                ├── gradlew.bat  --- [B2]
+                                                ├── build.gradle.kts    --- [C]
+                                                └── settings.gradle.kts --- [D]     
+                                            </code>
+                                        </pre>
+                                        </div>
+                                        <br>
+                                        <p class="card-text">
+                                            각 파일 디렉토리의 역할은 다음과 같습니다.</p>
+                                        <ul>
+                                            <li>·<strong> A : Gradle 래퍼와 관련된 파일을 저장하는 디렉토리</strong></li>
+                                            <li>·<strong> B : Gradle 래퍼를 실행하는 스크립트 ([B1]는 Linux, macOS 용이고 [B2]는 Windows 용)</strong></li>
+                                            <li>·<strong> C: Gradle 프로젝트의 빌드 설정(프로젝트 종속성, 플러그인 적용, 작업 정의 등)을 정의하는 파일 </strong></li>
+                                            <li>·<strong> D : Gradle 프로젝트 설정 (예 : 프로젝트 이름, 하위 프로젝트 정의) 파일</strong></li>                                 
+                                        </ul>   
+                                        <p class="card-text">
+                                            다음 명령을 실행하여 실행 가능한 작업 목록을 확인할 수 있습니다.</p>
+                                            <div class="body">
+                                                <pre class=" language-html">
+                                                <code class=" language-html">
+$ ./gradlew tasks 
+                                                </code>
+                                            </pre>
+                                            </div>
+                                            <p class="card-text">
+                                                여기서 사용하는 것은 gradlewGradle 래퍼라는 Gradle을 실행하는 스크립트입니다.
+                                                이 스크립트에서 실행하면 필요한 경우 지정된 버전의 Gradle을 다운로드하여 실행합니다.</p>
+                                            <br><br>
+                                            <h4>작업 정의</h4>
+                                            <p class="card-text">
+                                                Gradle의 작업은 빌드 프로세스 내에서 실행되는 개별 작업 단위입니다. 작업은 코드 컴파일 및 테스트 실행과 같은 다양한 작업을 수행할 수 있습니다. 이 섹션에서는 작업을 정의하는 방법을 소개합니다.</p>
+                                            <br>
+                                            <h5>hello 작업</h5>
+                                            <p class="card-text">
+                                                간단한 작업을 만듭니다. 실행할 때 Hello World! 표시하는 작업을 생각해 봅시다. 작업 정의는 build.gradle.kts에서 수행됩니다.</p>
+                                                <div class="body">
+                                                    <p>build.gradle.kts </p>
+                                                    <pre class=" language-html">
+                                                    <code class=" language-html">
+tasks.register("hello") {
+    doFirst {
+        print("Hello ")
+    }
+    doLast {
+        println("World!")
+    }
+}
+                                                    </code>
+                                                </pre>
+                                                </div>
+                                                <p class="card-text">
+                                                    이 작업을 수행하려면 ./gradlew hello명령을 입력합니다.</p>
+                                                    <div class="body">
+                                                        <pre class=" language-html">
+                                                        <code class=" language-html">
+$ ./gradlew hello
+
+> Task :hello
+Hello World!
+                                                            
+BUILD SUCCESSFUL in 1s
+1 actionable task: 1 executed
+                                                        </code>
+                                                    </pre>
+                                                    </div>
+                                                    <p class="card-text">
+                                                        doFirst{}에 있지만 print("Hello")실행된 후에 doLast{}는 println("World!")실행되고 있음을 알 수 있습니다. 또한 해당 작업에 대한 설명, 속한 그룹 등을 설정할 수 있습니다.</p>
+                                                    <br>
+                                                    <div class="body">
+                                                        <p>build.gradle.kts </p>
+                                                        <pre class=" language-html">
+                                                        <code class=" language-html">
+tasks.register("hello") {
+    // 아래추가
+    description = "Say hello to the world"
+    group = "tutorial"
+                                                            
+    ...
+}
+                                                        </code>
+                                                    </pre>
+                                                    </div>
+                                                    <p class="card-text">
+                                                        여기에서 설정한 내용은 에서 ./gradlew tasks확인할 수 있습니다.</p>
+                                                        <br>
+                                                        <div class="body">
+                                                            <p>build.gradle.kts </p>
+                                                            <pre class=" language-html">
+                                                            <code class=" language-html">
+% ./gradlew tasks
+
+> Task :tasks
+...
+Tutorial tasks
+--------------
+hello - Say hello to the world
+...
+                                                            </code>
+                                                        </pre>
+                                                        </div>
+                                                        <p class="card-text">
+                                                            여기에서 사용하는 API에 대한 자세한 내용은 <a href="https://docs.gradle.org/current/javadoc/org/gradle/api/Task.html" target="_blank">문서</a>를 참조하세요.</p>
+                                                            <br>        
+                                                            <h5>add 작업</h5>
+                                                            <p class="card-text">
+                                                                그런 다음 조금 더 발전시킨 작업을 만듭니다. 인수로 2개의 정수치를 받아, 그 합을 표시하는 태스크를 생각해 봅시다. 이 섹션에서는 DefaultTask를 상속하여 작업을 만드는 방법을 보여줍니다.</p>
+                                                            <br>
+                                                            <div class="body">
+                                                                <p>build.gradle.kts </p>
+                                                                <pre class=" language-html">
+                                                                <code class=" language-html">
+abstract class Add : DefaultTask() {
+    init {
+        description = "Add 2 integers"
+        roup = "tutorial"
+    }
+                                                                    
+    @get:Input
+    abstract val value1: Property<Int>
+                                                                    
+    @get:Input
+    abstract val value2: Property<Int>
+                                                                    
+    @TaskAction
+    fun run() {
+        val val1 = value1.get()
+        val val2 = value2.get()
+        val result = val1 + val2
+        println("$val1 + $val2 = $result")
+    }
+}
+                                                                </code>
+                                                            </pre>
+                                                            </div>   
+                                                            
+                                                            <p class="card-text">
+                                                                두 개의 정수 값을 받고 그 합을 표시하는 작업을 abstract class선언했습니다. 입력으로서 2개의 정수치(value1와 value2)를 받을 수 있도록하고 @get:Input의 선언이 있어, 태스크 실행에 의해 처리되는 @TaskAction것의 선언이 있습니다.
+                                                                그리고 이것을 사용하여 다음과 같이 작업을 정의합니다.</p>
+                                                            <br>  
+                                                            <div class="body">
+                                                                <p>build.gradle.kts </p>
+                                                                <pre class=" language-html">
+                                                                <code class=" language-html">
+tasks.register<Add>("add") {
+    value1.set(
+        properties["value1"]?.toString()?.toInt() ?: 0 // 인수가 지정되지 않은 경우 0으로 처리
+    )
+    value2.set(
+        properties["value2"]?.toString()?.toInt() ?: 0
+    )
+}
+                                                                </code>
+                                                            </pre>
+                                                            </div>   
+                                                            <p class="card-text">
+                                                                다음과 같이 태스크 실행 시 -P옵션에서 인수를 지정할 수 있습니다.</p>
+                                                                <div class="body">
+                                                                    <pre class=" language-html">
+                                                                    <code class=" language-html">
+% ./gradlew add -Pvalue1=10 -Pvalue2=20
+
+> Task :add
+10 + 20 = 30
+                                                                    </code>
+                                                                </pre>
+                                                                </div> 
+                                                                <p class="card-text">
+                                                                    이와 같이 인수를 건네줄 수 있게 하는 것으로, 보다 유연한 태스크의 실행을 실시할 수 있게 됩니다.</p>                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix" id="line2">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>2. Gradle의 다중 프로젝트 구성</strong> </h2>
+                        </div>
+                        <div class="body">
+                            <div class="card-block">
+                                <p>Gradle 프로젝트는 하나의 루트 프로젝트와 여러 하위 프로젝트로 구성된 다중 프로젝트 구성을 만들 수 있습니다.
+                                    여기에서는 간단한 멀티 프로젝트를 작성해 보겠습니다.</p>
+                                <br><br>
+                                <h4 class="mt-2">루트 프로젝트</h4>
+                                <hr>
+                                <p>먼저 다음 명령으로 Gradle 프로젝트를 만듭니다.</p>
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+$ mkdir multi-project
+$ cd multi-project
+$ gradle init --type basic --dsl kotlin # 일부질문에는 아무것도입력하지 않고 엔터키 누름 
+                                    </code>
+                                </pre>
+                                </div> 
+                                <p>작성되는 프로젝트는 다음과 같은 구성입니다. (설명에 불필요한 파일은 생략하여 기재하고 있습니다.)</p>
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+                                        multi-project  --- [루트프로젝트]
+                                        ├── ⋮
+                                        ├── gradle
+                                        │   ├── ⋮
+                                        │   ⋮
+                                        └── settings.gradle.kts
+                                    </code>
+                                </pre>
+                                </div> 
+                                <p>여기를 project루트 프로젝트라고합니다.</p>
+                                <p>루트 프로젝트에는 가 settings.gradle.kts배치되고 Gradle 프로젝트 전체의 설정을 설명합니다.
+                                    settings.gradle.kts에는 루트 프로젝트 이름이 설정됩니다.</p>
+                                    <div class="body">
+                                        <p>settings.gradle.kts</p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+rootProject.name = "multi-project"
+                                        </code>
+                                    </pre>
+                                    </div>   
+                                <p>또한 루트 프로젝트에 배치되어 있지만 build.gradle.kts이 파일은 선택 사항이므로 존재하지 않을 수 있습니다.</p>  
+                                <br><br>
+                                <h4 class="mt-2">하위 프로젝트</h4>
+                                <p>app하위 프로젝트를 만듭니다.</p> 
+                                <p>루트 프로젝트 아래에 app디렉토리를 만들고 app디렉토리 아래에 build.gradle.kts를 만듭니다.</p>    
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+                                        multi-project
+                                        ├── ⋮
+                                        ├── app  --- [하위프로젝트]
+                                        │   └── build.gradle.kts
+                                        ⋮
+                                    </code>
+                                </pre>
+                                </div> 
+                                <p>build.gradle.kts에 간단한 작업을 정의합니다.</p> 
+                                <div class="body">
+                                    <p>app/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+tasks.register("appTask") {
+    doLast {
+        println("This is app sub project")
+    }
+}
+                                    </code>
+                                </pre>
+                                </div>   
+                                <p>작성한 app서브 프로젝트를 Gradle이 인식할 수 있도록 루트 프로젝트 settings.gradle.kts에 아래의 코드를 추가합니다.</p> 
+                                <div class="body">
+                                    <p>settings.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+include("app")
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>./gradlew projects명령으로 프로젝트에 app추가되었는지 확인할 수 있습니다.</p> 
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+% ./gradlew projects
+
+> Task :projects
+                                        
+------------------------------------------------------------
+Root project 'multi-project'
+------------------------------------------------------------
+                                        
+Root project 'multi-project'
+\--- Project ':app'
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>app하위 프로젝트에 정의한 태스크는 다음과 같이 수행할 수 있습니다.</p> 
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+% ./gradlew :app:appTask
+This is app sub project
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>이런 방식으로 하위 프로젝트를 여러 개 추가할 수 있습니다.</p> 
+                                <br><br>
+                                <h4 class="mt-2">buildSrc 디렉토리</h4>
+                                <p>일부 서브프로젝트는 Gradle이 특별히 다루고 있습니다.</p> 
+                                <p>buildSrc그 중 하나이며 그 안의 코드는 다른 프로젝트를 빌드 할 때 자동으로 컴파일되어 사용할 수 있습니다. 따라서 프로젝트 내에서 공유하는 빌드 로직과 사용자 정의 플러그인을 관리하는 데 유용합니다.</p> 
+                                <p>여기에서 만들고 buildSrc다른 프로젝트에서 사용할 수 있는 작업을 만들어 봅시다.</p> 
+                                <p>먼저 buildSrc디렉토리와 그 아래 build.gradle.kts를 만듭니다.</p> 
+
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+                                        multi-project
+                                        ├── ⋮
+                                        ├── buildSrc
+                                        │   └── build.gradle.kts
+                                        ⋮
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>buildSrc디렉터리는 자동으로 하위 프로젝트로 처리되므로 변경할 필요가 settings.gradle.kts없습니다.</p> 
+                                <p>buildSrc안에 kotlin 코드를 작성하려면 kotlin-dsl플러그인이 필요합니다. 이를 위해 buildSrc/build.gradle.kts다음과 같이 작성합니다.</p> 
+                                <div class="body">
+                                    <p>buildSrc/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+plugins {
+    `kotlin-dsl`
+}
+                                        
+repositories {
+    mavenCentral()
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>작업을 정의하기 위해 buildSrc/src/main/kotlin/CommonTask.kt파일을 만듭니다.</p> 
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+                                        multi-project
+                                        ├── ⋮
+                                        ├── buildSrc
+                                        │   ├── src/main/kotlin/CommonTask.kt
+                                        │　　⋮
+                                        ⋮
+                                    </code>
+                                </pre>
+                                </div> 
+                                <p>작성 CommonTask.kt하려면 다음과 같이 작성하여 태스크를 정의하십시오.</p> 
+                                <div class="body">
+                                    <p>buildSrc/src/main/kotlin/CommonTask.kt</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.TaskAction
+                                        
+abstract class CommonTask : DefaultTask() {
+    init {
+        description = "Common task in my project"
+        group = "common"
+    }
+                                        
+    @TaskAction
+    fun run() {
+        println("Hello! This is common task")
+    }
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>정의한 사용자 정의 플러그인 app에서 사용할 수 있도록 아래 코드를 추가합니다.</p> 
+                                <div class="body">
+                                    <p>app/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+
+tasks.register<CommonTask>("commonTask")
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>이렇게 하면 commonTask작업을 수행할 수 있습니다.</p> 
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+% ./gradlew :app:commonTask 
+
+> Task :app:commonTask
+Hello! This is common task
+                                        
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>buildSrc에 대한 자세한 내용은 <a href="https://docs.gradle.org/current/userguide/sharing_build_logic_between_subprojects.html#sec:using_buildsrc" target="_blank">문서</a>를 참조하십시오.</p>
+
+                                <br><br>
+                                <h4 class="mt-2">Composite Build</h4>
+                                <p>Composite Build는 여러 빌드를 결합하여 구성하는 빌드를 말합니다.</p> 
+                                <p>Composite Build를 사용하면 각 프로젝트를 별도의 빌드로 관리하고 다른 리포지토리에 배치하고 관리할 수 있습니다. 반면에 멀티프로젝트 구성에서는 종종 모든 하위 프로젝트가 하나의 리포지토리로 그룹화됩니다.</p> 
+                                <p>Composite Build는 모듈 간의 종속성이 엄격하게 관리되는 상태에서 프로젝트 간의 연계를 유연하게 만드는 데 사용됩니다.</p> 
+                                <p>Composite Build의 예로는 다음과 같은 디렉토리 구조가 있습니다.</p> 
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+                                        my-composite
+                                        ├── gradle
+                                        ├── gradlew
+                                        ├── settings.gradle.kts
+                                        ├── build.gradle.kts
+                                        ├── my-app
+                                        │   ├── settings.gradle.kts
+                                        │   └── app
+                                        │       ├── build.gradle.kts
+                                        │       └── src/main/java/org/sample/my-app/Main.java
+                                        └── my-utils
+                                            ├── settings.gradle.kts
+                                            ├── number-utils
+                                            │   ├── build.gradle.kts
+                                            │   └── src/main/java/org/sample/numberutils/Numbers.java
+                                            └── string-utils
+                                                ├── build.gradle.kts
+                                                └── src/main/java/org/sample/stringutils/Strings.java
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>여기서는 각각 독립적인 빌드가 되며 각각에 존재 합니다 my-app.my-utilssettings.gradle.kts</p> 
+                                <p>이 구조는 다중 프로젝트와 유사하지만 다중 프로젝트는 하나의 루트 프로젝트와 여러 하위 프로젝트로 구성되며 종속 라이브러리와 빌드 로직을 공유하는 반면 Composite Build에서는 빌드간에 기본적으로 서로 독립적입니다. 빌드 단위입니다.</p> 
+                                <p>my-composite/settings.gradle.kts에 다음과 같이를 includeBuild기술하는 것으로 composite build 구성이 됩니다.</p> 
+                                <div class="body">
+                                    <p>my-composite/settings.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+rootProject.name = "my-composite"
+
+includeBuild("my-app")
+includeBuild("my-utils")
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>Composite Build에 대한 자세한 내용은 <a href="https://docs.gradle.org/current/userguide/composite_builds.html" target="_blank">문서</a>를 참조하십시오.</p> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix" id="line3">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>3. Gradle Plugin 기초</strong> </h2>
+                        </div>
+                        <div class="body">
+                            <div class="card-body">
+                                <p>Gradle 플러그인은 프로젝트 빌드, 테스트 및 배포 절차를 자동화하고 표준 빌드 프로세스를 사용자 정의하는 수단입니다.
+                                    예를 들어 Android 프로젝트를 빌드할 때 필요한 작업 추가 및 종속성 관리를 자동화할 수 있습니다.</p>
+                                <br><br>
+                                <h4 class="mt-2">플러그인 유형</h4>
+                                <p>플러그인은 다음 세 가지 방법으로 제공됩니다.</p>
+                                <br>
+                                <ul>
+                                    <li><strong>1. Core 플러그인</strong></li>
+                                    <ul><li>&nbsp;&nbsp;&nbsp;▷ Gradle에 내장된 공식 지원 플러그인입니다</li><li>&nbsp;&nbsp;&nbsp;▷ Gradle Plugin Reference에 목록이 있습니다.</li></ul>
+                                    <li><strong>2. 커뮤니티 플러그인</strong></li>
+                                    <ul><li>&nbsp;&nbsp;&nbsp;▷ Gradle 커뮤니티나 개인,기업에 의해 개발 공개되고 있는 플러그인입니다.</li><li>&nbsp;&nbsp;&nbsp;▷ Gradle Plugin Portal등에서 사용할 수 있습니다.</li></ul>
+                                    <li><strong>3. 지역</strong></li>   
+                                    <ul><li>&nbsp;&nbsp;&nbsp;▷ 특정 프로젝트나 팀내에서 빌드로직을 공유하기 때문에 외부에 공개되지 않는 플러그인입니다..</li></ul>                             
+                                </ul>   
+                                <br><br>
+                                <h4 class="mt-2">코어 플러그인 사용</h4>
+                                <p>코어 플러그인 중 하나 인 application플러그인을 사용해보십시오.</p>
+                                <p>플러그인에서는 Java 어플리케이션의 빌드나 패키징등을 실행할 수 있게 됩니다.</p>
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+$ mkdir java-app
+$ cd java-app
+$ gradle init --type basic --dsl kotlin # 일분 질문에는 아무것도 입력하지 않고 엔터키누름 
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>만들어진 build.gradle.kts.application 플러그인을 참조하는 코드를 추가합니다 </p>
+                                <div class="body">
+                                    <p>build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+// application 플러그인 지정하기
+{
+    application
+}
+                                        
+// 진입점이 되는 Main클래스 지정하기 
+pplication {
+    mainClass = "com.example.Main"
+}
+``
+                                        
+Core플러그인의 경우, 'application version "X.Y.Z"'처럼 버전을 지정할 필요가 없음 
+                                        
+Java 소스코드를 'src/main/java/com/example/Main.java'에 작성함
+                                        
+```java:src/main/java/com/example/Main.java
+package com.example;
+                                        
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>% ./gradlew run명령을 사용하여 Java 애플리케이션을 실행할 수 있습니다.</p>
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+% ./gradlew run
+
+> Task :run
+Hello world!
+                                        
+...
+                                    </code>
+                                </pre>
+                                </div> 
+                                <p>이번에는 손쉽게 시도 할 수있는 Java application플러그인을 이용했습니다.</p>
+                                <p>Kotlin 프로젝트 빌드에 관심이 있다면 <a href="https://kotlinlang.org/docs/gradle-configure-project.html" target="_blank">Kotlin Gradle Plugin</a>을 참조하십시오.</p>
+                                <br><br>
+                                <h4 class="mt-2">맞춤 플러그인 만들기</h4>
+                                <p>자신이 좋아하는 플러그인을 만들 수 있습니다.</p>
+                                <p>예를 들어 대규모 프로젝트에서 여러 하위 프로젝트가 동일한 설정을 공유하는 경우 각 프로젝트에 동일한 설정을 반복적으로 작성하는 대신 사용자 정의 플러그인을 작성하여 빌드 스크립트를 간단하게 유지할 수 있습니다.</p>
+                                <p>여기에서는 간단한 사용자 정의 플러그인을 만드는 방법을 설명합니다.
+                                    작성하는 플러그인은, "Hello, XXXX!" 라고 표시할 뿐의 태스크를 추가하는 플러그인입니다.</p>
+                                <p>먼저 빈 Gradle 프로젝트를 만듭니다.</p>        
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+$ mkdir custom-plugin
+$ cd custom-plugin
+$ gradle init --type basic --dsl kotlin # 일부 질문에는 아무것도 입력하지 않고 엔터키 입력 
+                                    </code>
+                                </pre>
+                                </div> 
+                                <p>플러그인을 다른 하위 프로젝트에서 사용할 수 있도록 코드를 buildSrc넣으십시오.</p>       
+                                <p>buildSrc디렉토리를 만들고 그 아래에 build.gradle.kts만듭니다.</p>  
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+                                        custom-plugin
+                                        ├── ⋮
+                                        ├── buildSrc
+                                        │   └── build.gradle.kts
+                                        ⋮
+                                    </code>
+                                </pre>
+                                </div> 
+                                <p>플러그인 코드는 Kotlin으로 작성하기 위해 Kotlin Gradle Plugin(KGP)을 사용합니다. 이를 위해 buildSrc/build.gradle.kts다음 코드를 추가합니다.</p>       
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+plugins {
+    // KGP추가
+    kotlin("jvm") version "2.0.20"
+}
+                                        
+// 의존성 참조처 추가 
+repositories {
+    mavenCentral()
+}
+                                    </code>
+                                </pre>
+                                </div>
+                                <p>커스텀 플러그인을 만들겠습니다.</p>       
+                                <p>사용자 정의 플러그인을 만드는 데 필요한 java-gradle-plugin플러그인을 buildSrc/build.gradle.kts에 추가합니다.</p>  
+                                <div class="body">
+                                    <p>buildSrc/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+plugins {
+    `java-gradle-plugin`
+    kotlin("jvm") version "2.0.20"
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>사용자 정의 플러그인의 소스 코드를 buildSrc/src/main/kotlin/CustomPlugin.kt에 설명합니다.</p>  
+                                <div class="body">
+                                    <p>buildSrc/src/main/kotlin/CustomPlugin.kt</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+import org.gradle.api.DefaultTask
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.tasks.TaskAction
+                                        
+abstract class HelloTask : DefaultTask() {
+    init {
+        description = "Say hello from custom plugin"
+        group = "custom"
+    }
+                                        
+    @TaskAction
+    fun message() {
+        println("Hello world!")
+    }
+}
+                                        
+class CustomPlugin : Plugin<Project> {
+    override fun apply(target: Project) {
+        target.tasks.register("helloTask", HelloTask::class.java)
+    }
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>buildSrc/build.gradle.kts에 플러그인을 적용하는 코드를 추가합니다.</p>  
+                                <div class="body">
+                                    <p>buildSrc/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+
+gradlePlugin {
+    plugins {
+        // "customPlugin"라는 이름의 플러그인 만들기 
+        create("customPlugin") {
+            id = "custom"
+            implementationClass = "CustomPlugin"
+        }
+    }
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>이상으로 맞춤 플러그인을 만들 수있었습니다. 프로젝트 구조는 다음과 같습니다.</p>  
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+                                        custom-plugin
+                                        ├── ⋮
+                                        ├── buildSrc
+                                        │   ├── src/main/kotlin
+                                        │   │   └── CustomPlugin.kt
+                                        │   └── build.gradle.kts
+                                        ⋮
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>그런 다음 사용자 정의 플러그인을 사용하는 하위 프로젝트를 만듭니다. 루트 디렉토리 아래에 app/build.gradle.kts를 만듭니다.</p>  
+                                <p>그리고 루트 프로젝트 settings.gradle.kts에 app하위 프로젝트를 추가하기 위해 다음 코드를 추가합니다.</p>  
+                                <div class="body">
+                                    <p>settings.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+
+include("app")
+``
+                                        
+'app/build.gradle.kts'에 다음과 같이 기술함 
+                                        
+```gradle:app/build.gradle.kts
+plugins {
+    // 사용할 커스텀 플러그인 ID 지정 
+    id("customPlugin")
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>% ./gradlew :app:helloTask명령을 사용하면 사용자 정의 플러그인을 사용하여 작업을 수행할 수 있습니다.</p>  
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+% ./gradlew :app:helloTask
+
+> Task :app:helloTask
+Hello world!
+                                        
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <br><br>
+                                <h4 class="mt-2">Convention 플러그인</h4>
+                                <p>프로젝트 전반에 걸쳐 빌드 로직이 공유하는 접근 방식으로 convention 플러그인이 권장됩니다.
+                                    convention 플러그인은 특별한 플러그인이 아니라 빌드 로직을 공유하기 위한 사용자 정의 플러그인입니다.</p>
+                                <p>convention 플러그인은 Composite Build 형식으로 구현되는 경우가 많습니다. Composite Build는 여러 Gradle 프로젝트를 결합하여 단일 프로젝트처럼 처리할 수 있는 Gradle의 기능으로, 특히 대규모 프로젝트나 모듈 간의 의존성이 복잡한 프로젝트에서 이용되고 있습니다.</p>  
+                                <p>여기에서는 위에서 설명한 CustomPlugin 플러그인을 convention 플러그인으로 Composite Build 구성에서 만듭니다.<br>
+                                    먼저 빈 Gradle 프로젝트를 만듭니다.</p>  
+                                    <div class="body">
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+$ mkdir convention-plugin
+$ cd convention-plugin
+$ gradle init --type basic --dsl kotlin 
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>작성된 Gradle 프로젝트 안에 convention 플러그인을 위한 컴포넌트(빌드)를 작성합니다.</p>
+                                    <p>convention 플러그인의 디렉토리는 종종 이름이 build-logic지정된 것 같습니다. 여기서도 루트 디렉토리 아래에 build-logic디렉토리를 작성하고 그 아래에 settings.gradle.kts작성합니다.</p>
+                                    <div class="body">
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+                                            convention-plugin
+                                            ├── settings.gradle.kts
+                                            ├── ⋮
+                                            ├── build-logic
+                                            │   └── settings.gradle.kts
+                                            ⋮
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>루트 프로젝트 settings.gradle.kts에 아래 코드를 추가하고 프로젝트에 build-logic빌드를 추가합니다.</p>
+                                    <div class="body">
+                                        <p>settings.gradle.kts</p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+...
+
+includeBuild("build-logic")
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>여기서 ./gradlew projects명령이 빌드를 추가했는지 확인할 수 있습니다.</p>
+                                    <div class="body">
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+% ./gradlew projects
+...
+Root project 'convention-plugin'
+No sub-projects
+                                            
+Included builds:
+                                            
+\--- Included build ':build-logic'
+                                            
+...
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>다음 build-logic에 앞에서 설명한 CustomPlugin 플러그인과 마찬가지로 사용자 정의 플러그인을 작성합니다.</p>
+                                    <p>build-logic디렉토리 아래에 convention디렉토리를 작성합니다. 그리고 convention디렉토리 아래에 build.gradle.kts를 만듭니다.</p>
+                                    <div class="body">
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+                                            convention-plugin
+                                            ├── ⋮
+                                            ├── build-logic
+                                            │   ├── convention
+                                            │   │   └── build.gradle.kts
+                                            │   └── settings.gradle.kts
+                                            ⋮
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>build-logic/settings.gradle.kts에 다음 코드를 작성합니다.</p>
+                                    <div class="body">
+                                        <p>build-logic/settings.gradle.kts</p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+// 프로젝트명 정의하기 
+rootProject.name = "build-logic"
+                                            
+// convention 하위 프로젝트 추가하기 
+include(":convention")
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>사용자 정의 플러그인의 소스 코드를 build-logic/convention/src/main/kotlin/CustomPlugin.kt에 설명합니다. (전술의 소스 코드를 다시 게재합니다.)</p>
+                                    <div class="body">
+                                        <p>build-logic/convention/src/main/kotlin/CustomPlugin.kt</p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+import org.gradle.api.DefaultTask
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.tasks.TaskAction
+                                            
+abstract class HelloTask : DefaultTask() {
+    init {
+        description = "Say hello from custom plugin"
+        group = "custom"
+    }
+                                            
+    @TaskAction
+    fun message() {
+        println("Hello world!")
+    }
+}
+                                            
+class CustomPlugin : Plugin<Project> {
+    override fun apply(target: Project) {
+        target.tasks.register("helloTask", HelloTask::class.java)
+    }
+}
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>사용자 정의 플러그인을 작성했으므로 이를 활용하는 하위 프로젝트를 작성합니다.</p>
+                                    <p>루트 프로젝트 아래에 app디렉토리를 만들고 그 아래에 build.gradle.kts만듭니다.</p>
+                                    <div class="body">
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+                                            convention-plugin
+                                            ├── ⋮
+                                            ├── build-logic
+                                            │   └── ⋮
+                                            ├── app
+                                            │   └── build.gradle.kts
+                                            ⋮
+                                        </code>
+                                    </pre>
+                                    </div> 
+                                    <p>루트 프로젝트 settings.gradle.kts에 app하위 프로젝트를 추가합니다.</p>
+                                    <div class="body">
+                                        <p>settings.gradle.kts</p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+rootProject.name = "convention-plugin"
+
+includeBuild("build-logic")
+                                            
+// app 하위 프로젝트추가 
+include("app")
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>app/build.gradle.kts에는 다음과 같이 기술합니다.</p>
+                                    <div class="body">
+                                        <p>app/build.gradle.kts</p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+plugins {
+    id("customPlugin")
+}
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>% ./gradlew :app:helloTask명령을 사용하면 사용자 정의 플러그인을 사용하여 작업을 수행할 수 있습니다.</p>
+                                    <div class="body">
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+% ./gradlew :app:helloTask
+
+> Task :app:helloTask
+Hello world!
+                                            
+...
+                                        </code>
+                                    </pre>
+                                    </div> 
+                                    <p>빌드 로직 공유의 목적으로도 buildSrc사용할 수 있습니다. 그러나 전통적으로 에 buildSrc놓인 코드는 모든 빌드에서 자동으로 컴파일되기 때문에, 에의 변경에 의해 전체의 빌드 퍼포먼스가 buildSrc저하될 가능성이 있었습니다. 한편 convention 플러그인은 필요할 때만 컴파일되는 독립 플러그인으로 취급되기 때문에 buildSrc보다 효율적으로 빌드를 관리할 수 있었습니다.
+                                    </p>
+                                    <p>그러나 Gradle 8.0 부터는 buildSrc암시적으로 composite build처럼 취급되게 되어 있어 상황은 개선되고 있는 것 같습니다.</p>
+                                    <p>covention 플러그인에 대한 자세한 내용은 <a href="https://docs.gradle.org/current/userguide/sharing_build_logic_between_subprojects.html#sec:convention_plugins" target="_blank">문서</a>를 참조하십시오.</p>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix" id="line4">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>4. 안드로이드 앱에서 Gradle의 기초</strong></h2>
+                        </div>
+                        <div class="body">
+                            <div class="card-body">
+                                <p>여기에서는 Android 앱 빌드에서 Gradle의 기본 기능에 대해 설명합니다.
+                                    Android Studio에서 새로운 Android 프로젝트를 만들고 출력된 코드베이스에 대해 설명합니다.</p>
+                                <br><br>
+                                <h4 class="mt-2">Android 프로젝트 만들기</h4>
+                                <p>플러그인은 다음 세 가지 방법으로 제공됩니다.</p>
+                                <p>플러그인은 다음 세 가지 방법으로 제공됩니다.</p>
+           
+                                <br><br>
+                                <h4 class="mt-2">코어 플러그인 사용</h4>
+                                <p>코어 플러그인 중 하나 인 application플러그인을 사용해보십시오.</p>
+                                <p>안드로이드 스튜디오를 실행한 후 File > New > New Project... 에서 Empty Activity의 새 프로젝트를 생성합니다. 프로젝트 생성 시 Minimum SDK는 API28로 설정하고, Build configuration language는 Kotlin DSL을 선택합니다.</p>
+                                <p><img src="assets/img/gradle1.png" border="0" alt="android gradle"></p>
+                                <p>생성된 프로젝트는 다음과 같이 구성됩니다. (Gradle에 관련된 것 이외는 생략해서 기재하고 있습니다.)</p>
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+                                        FirstApp
+                                        ├── app
+                                        │   ├── build.gradle.kts
+                                        │   ├── src
+                                        │   │   ├── main
+                                        │   │   │   ├── java
+                                        │   │   │   │   └── ⋮
+                                        │   │   │   └── AndroidManifest.xml
+                                        │   │   ⋮
+                                        │   ⋮
+                                        ├── gradle
+                                        │   ├── libs.versions.toml
+                                        │   └── wrapper
+                                        │       ├── gradle-wrapper.jar
+                                        │       └── gradle-wrapper.properties
+                                        ├── build.gradle.kts
+                                        ├── gradle.properties
+                                        ├── gradlew
+                                        ├── gradlew.bat
+                                        ├── settings.gradle.kts
+                                        ⋮
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>Android 엔지니어에게는 친숙한 프로젝트 구성입니다. 자세한 내용은 <a href="https://developer.android.com/build/android-build-structure?hl=ko" target="_blank">Android 빌드구조</a>에 설명되어 있습니다. </p>
+                                <p>Gradle 프로젝트로 봤을 때, 루트 디렉터리인 FirstApp 아래에 settings.gradle.kts 파일이 존재하는 것으로 보아 루트 프로젝트임을 알 수 있습니다.</p>
+                                <p>또한, app 디렉토리 아래에 build.gradle.kts 파일이 존재하고, settings.gradle.kts 파일 안에 include(“:app”)이 포함되어 있는 것으로 보아 app이 하위 프로젝트로 존재함을 알 수 있습니다. 앱 개발의 맥락에서 서브 프로젝트는 모듈이라고도 합니다.</p>
+                                <p>이제부터 안드로이드 앱 빌드에 관련된 주요 파일들을 자세히 살펴보겠습니다.</p>
+                                <br><br>
+                                <h4 class="mt-2">./settings.gradle.kts</h4>
+                                <p>루트 프로젝트에 배치된 settings.gradle.kts 파일은 다음과 같이 작성되어 있습니다.</p>
+                                <div class="body">
+                                    <p>settings.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+                                        
+rootProject.name = "FirstApp"
+include(":app")
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>코드를 위에서부터 순서대로 살펴보겠습니다.</p>       
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+                                    </code>
+                                </pre>
+                                </div> 
+                                <p>pluginManagement{}는 플러그인의 의존성 해결에 사용할 리포지토리를 설정하고, 빌드 스크립트에서 적용될 플러그인 버전을 정의할 수 있습니다. pluginManagement{}는 setting.gradle.kts 파일의 맨 앞에 작성되어야 합니다.</p>       
+                                <p>여기서는 플러그인의 의존성 해결 대상으로 repositories{}에 의해 google{}, mavenCentral(), gradlePluginPortal()이 설정되어 있습니다. 여기서 google{}에 대해서는 content{} 안에 includeGroupByRegex()가 설정되어 있습니다.</p>   
+                                <p>이는 플러그인 의존성 해결의 효율성을 높이기 위한 설정으로, Gradle은 여러 개의 리포지토리가 설정되어 있을 때, 맨 앞부터 순서대로 검색을 진행하기 때문에 불필요한 검색을 하지 않기 위한 설정입니다.</p>   
+                                <div class="body">
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+                                    </code>
+                                </pre>
+                                </div>
+                                <p>dependencyResolutionManagement{}는 프로젝트 전체 라이브러리의 의존성 해결에 사용할 리포지토리를 설정합니다.</p>       
+                                <p>repositoriesMode는 리포지토리 설정을 몇 가지 모드 중에서 설정할 수 있습니다. repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)를 설정하면, settings.gradle.kts 이외의 다른 build.gradle.kts 등으로 리포지토리를 설정하려고 하면 빌드 에러를 발생시킵니다.</p> 
+                                <p>여기서는 라이브러리 의존성 해결 대상으로 repositories{}에 의해 google(), mavenCentral()이 설정되어 있습니다.</p> 
+                                <div class="body">
+                                    <p>buildSrc/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+rootProject.name = "FirstApp"
+include(":app")
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>마지막으로 rootProject에서 가져온 ProjectDescriptor를 통해 루트 프로젝트의 이름을 설정하고, include()를 통해 app 디렉터리를 하위 프로젝트로 추가하고 있습니다.</p>  
+                                <br><br>
+                                <h4 class="mt-2">./build.gradle.kts</h4>
+                                <p>루트 프로젝트에 배치된 build.gradle.kts 파일은 다음과 같이 작성되어 있습니다.</p>
+
+                                <div class="body">
+                                    <p>build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>여기에는 프로젝트 전체에서 사용할 플러그인과 그 버전이 설정되어 있습니다. plugins{} 블록 안에서는 수신기로서 PluginDependenciesSpec에 접근할 수 있습니다. PluginDependenciesSpec의 alias로 플러그인을 추가하고 있습니다.</p>
+                                <p>alias로 지정된 libs.plugins.android.application은 Version Catalog에서 정의된 것으로, gradle/libs.versions.toml 파일 내에 정의되어 있습니다.</p>
+
+                                <p>루트 프로젝트 settings.gradle.kts에 아래 코드를 추가하고 프로젝트에 build-logic빌드를 추가합니다.</p>
+
+                                <p>사또한 alias에 부여된 apply false는 해당 플러그인을 이 루트 프로젝트에는 적용하지 않음을 나타냅니다. 이를 통해 다른 하위 프로젝트의 plugins{}에서 해당 플러그인을 사용할 때 alias(libs.plugins.android.application)와 같이 다시 버전을 지정할 필요가 없는 등 프로젝트 전체에서 일관성을 유지할 수 있습니다.</p>
+                                <br><br>
+                                <h4 class="mt-2">app/build.gradle.kts</h4>
+                                <p>app 하위 프로젝트는 안드로이드 앱을 구성하는 프로젝트입니다. app 하위 프로젝트에 배치된 build.gradle.kts 파일은 다음과 같이 작성되어 있습니다.</p>
+
+                                <div class="body">
+                                    <p>app/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+}
+                                        
+android {
+    namespace = "com.example.android_empty_activity"
+    compileSdk = 34
+                                        
+    defaultConfig {
+        applicationId = "com.example.android_empty_activity"
+        minSdk = 28
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+                                        
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+                                        
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+}
+                                        
+dependencies {
+                                        
+    implementation(libs.androidx.core.ktx)
+    // 생략
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    // 생략
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>코드를 위에서부터 순서대로 살펴보겠습니다.</p>
+                                <div class="body">
+                                    <p>app/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>루트 프로젝트의 build.gradle.kts와 마찬가지로 이 서브 프로젝트에서 사용할 플러그인을 plugins{}에서 설정합니다.</p>
+                                <div class="body">
+                                    <p>app/build.gradle.kts </p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+android {
+    namespace = "com.example.android_empty_activity"
+    compileSdk = 34
+    ...
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>android{}는 Android Gradle Plugin에서 제공하는 것으로, 안드로이드 앱의 빌드 관련 설정을 합니다.</p>
+                                <p>namespace에서 네임스페이스를 설정합니다. 여기서 설정한 값이 앱의 루트 패키지 이름이 됩니다.</p>
+                                <p>compileSdk에서 컴파일할 때 사용할 API 레벨을 설정합니다. 여기서 지정한 API 레벨 이하의 API를 사용할 수 있습니다.</p>
+                                <p>API 레벨은 안드로이드 플랫폼 버전별로 제공되는 프레임워크 API의 리비전을 고유하게 식별하는 정수 값이다. (API 레벨에 대한 자세한 내용은 <a href="https://developer.android.com/guide/topics/manifest/uses-sdk-element?hl=ko#ApiLevels" target="_blank">문서</a>참조)</p>
+                                <div class="body">
+                                    <p>app/build.gradle.kts </p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+android {
+...
+    defaultConfig {
+        applicationId = "com.example.firstapp"
+        minSdk = 28
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+                                        
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+    ...
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>defaultConfig {} 블록 내에서 수신기로 DefaultConfig에 접근할 수 있습니다. 이를 통해 앱의 모든 빌드 변형에 공통적으로 적용되는 각종 설정의 기본값을 설정합니다. (설정은 변형마다 덮어쓸 수 있습니다.)</p>
+                                <p>applicationId에서는 애플리케이션 ID를 설정합니다. 애플리케이션 ID는 구글 플레이 스토어 등에서 앱을 식별하기 위한 고유 ID가 됩니다.</p>
+                                <p>minSdk에서는 앱이 동작할 수 있는 최소 API 레벨을 설정합니다. 사용자 디바이스의 API 레벨이 이 값보다 낮으면 해당 앱을 설치할 수 없습니다.</p>
+                                <p>targetSdk는 앱이 동작할 목표 API 레벨을 설정하는데, compileSdk는 targetSdk보다 높은 API 레벨을 설정할 수 있지만, targetSdk는 compileSdk보다 높은 API 레벨을 설정할 수 없습니다.
+                                    사용자 디바이스의 API 레벨이 targetSdk보다 낮은 경우에도 앱은 동작할 수 있습니다. 또한, targetSdk보다 높은 경우에도 앱은 호환성을 유지하기 위해 targetSkd의 API 레벨에 대한 동작을 에뮬레이트한다.</p>
+                                <p>versionCode는 앱의 versionCode를 설정하며, versionCode는 사용자에게 표시되지 않는 정수 값입니다.</p>
+                                <p>versionName은 앱의 versionName을 설정하며, versionName은 사용자에게 표시되는 1.0.1과 같은 문자열 값입니다.</p>
+                                <p>testInstrumentationRunner에서는 앱의 인스트루멘테이션 테스트를 실행하기 위한 엔트리 포인트가 되는 클래스를 설정합니다.</p>
+                                <p>vectorDrawables{} 블록 안에서 VectorDrawables를 리시버로 접근할 수 있습니다. 이를 통해 벡터 드로어블의 처리를 설정할 수 있습니다.</p>
+                                <p>useSupportLibrary에서는 안드로이드의 벡터 드로어블 지원 라이브러리를 사용하도록 설정하고 있는데, API 레벨 21 이하에서는 벡터 드로어블이 지원되지 않지만, 지원 라이브러리를 사용하면 API 레벨 21 이하에서 도 벡터형 드로어블을 사용할 수 있으며, minSdk 가 28로 설정되어 있기 때문에 영향을 미치지 않지만, 향후 21 이하를 지원하게 될 경우 영향을 미칠 수 있습니다.</p>
+                                <div class="body">
+                                    <p>app/build.gradle.kts </p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+buildTypes {
+    release {
+        isMinifyEnabled = false
+        proguardFiles(
+            getDefaultProguardFile("proguard-android-optimize.txt"),
+            "proguard-rules.pro"
+        )
+    }
+}
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>buildTypes 블록 안에서 NamedDomainObjectContainer를 수신자로 접근할 수 있습니다. 이를 통해 앱의 빌드 타입별 설정을 할 수 있다. 빌드 타입을 정의함으로써 앱을 빌드용과 릴리스용 등 다양한 변형으로 빌드할 수 있습니다.</p>
+                                <p>[release{}] 블록 안에서는 리시버로서 릴리즈 빌드를 위한 BuildType에 접근할 수 있습니다. 이를 통해 릴리스 빌드 시 빌드 설정을 할 수 있습니다.</p>
+                                <p>isMinifyEnabled에서는 앱의 압축(shrinking)을 활성화 또는 비활성화할 수 있습니다.
+                                    앱 압축에 대한 자세한 내용은 문서를 참고하시기 바랍니다. 앱 압축에는 현재 R8이라는 툴이 사용되고 있습니다. (과거에는 ProGuard가 사용되었으며, R8은 ProGuard와 호환됩니다).</p>
+                                <p>현재 설정에서 isMinifyEnabled = false로 설정되어 있어 압축이 이루어지지 않습니다. 압축을 하면 앱 크기가 작아지고 성능 및 보안이 향상되는 등의 장점이 있으므로, 앱을 릴리스할 때는 압축을 활성화하는 것이 좋습니다.</p>
+                                <p>proguardFiles에서는 앱 압축에 대한 설정을 담은 설정 파일을 지정할 수 있으며, getDefaultProguardFile(“proguard-android-optimize.txt”)은 Android Gradle Plugin에서 제공하는 기본 설정을 불러오고 있습니다. 그리고 proguard-rules.pro 파일에 프로젝트별 설정을 추가할 수 있도록 설정되어 있습니다.</p>
+                                <div class="body">
+                                    <p>app/build.gradle.kts </p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>compileOptions{} 블록 안에서는 컴파일옵션(CompileOptions)을 리시버로 접근할 수 있습니다. 이를 통해 Java 컴파일러의 설정을 할 수 있습니다.</p>
+                                <p>sourceCompatibility에서는 소스 코드를 컴파일할 때 사용할 Java 버전을 지정합니다.</p>
+                                <p>targetCompatibility는 생성되는 Java 바이트코드의 버전을 지정하며, targetCompatibility를 지정하지 않으면 sourceCompatibility의 설정이 사용됩니다.</p>
+
+                                <div class="body">
+                                    <p>app/build.gradle.kts </p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+kotlinOptions {
+    jvmTarget = "1.8"
+}
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>kotlinOptions{} 블록은 Kotlin Gradle Plugin에서 제공하는 API입니다.
+                                    jvmTarget에서는 Kotlin 소스 코드를 컴파일할 때 사용할 Java 바이트코드 버전을 설정합니다.</p>
+                                <p>현재 설정에서는 Kotlin 버전이 1.9.0으로 설정되어 있습니다. 하지만 Kotlin 2.0.0부터 kotlinOptions에서 이 설정은 deprecated로 변경되었다. 대신 다음과 같이 기술해야 합니다.</p>
+                                <p>관련정보: <a href="https://youtrack.jetbrains.com/issue/KTIJ-28468/kotlinOptions-to-compilerOptions-inspection-kts-only" target="_blank">kotlinOptions to compilerOptions inspection (kts only)</a></p>
+                                <div class="body">
+                                    <p>app/build.gradle.kts </p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+buildFeatures {
+    compose = true
+}
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>buildFeatures{} 블록 안에서는 리시버로 BuildFeatures에 접근할 수 있습니다. 이를 통해 다양한 기능의 활성화/비활성화를 설정할 수 있습니다.</p>
+                                <p>compose에서는 compose의 기능을 활성화할 수 있습니다. 앱에서 Jetpack Compose를 사용할 경우 활성화해야 합니다.</p>
+                                <div class="body">
+                                    <p>app/build.gradle.kts </p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+composeOptions {
+    kotlinCompilerExtensionVersion = "1.5.1"
+}
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>composeOptions{} 블록 안에서는 수신기로서 ComposeOptions에 접근할 수 있습니다. 이를 통해 Compose 기능을 설정할 수 있습니다.</p>
+                                <p>kotlinCompilerExtensionVersion에서는 compose compiler의 버전을 설정합니다. compose compiler 버전은 Kotlin 버전과 호환되는 버전을 선택해야 합니다. </p>
+                                <p>또한, Kotlin 2.0 이상에서는 compose compiler가 Kotlin의 리포지토리에서 관리되도록 변경되었습니다. 
+                                    따라서 kotlinCompilerExtensionVersion을 지정할 필요가 없으며, 대신 Compose Compiler Gradle plugin을 사용하는 형태로 변경되었습니다. 
+                                    자세한 내용은 <a href="https://android-developers.googleblog.com/2024/04/jetpack-compose-compiler-moving-to-kotlin-repository.html" target="_blank">Jetpack Compose compiler moving to the Kotlin repository</a>를 참고하시기 바랍니다.</p>
+                                    <div class="body">
+                                        <p>app/build.gradle.kts </p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+...
+packaging {
+    resources {
+        excludes += "/META-INF/{AL2.0,LGPL2.1}"
+    }
+}
+...
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>packaging{} 블록 안에서는 Receiver로 Packing에 접근할 수 있습니다. 이를 통해 앱을 APK나 AAB로 빌드할 때 패키징을 설정할 수 있습니다. 패키징 단계에서 리소스와 애셋을 어떻게 처리할지, 특정 리소스를 포함할지 제외할지를 제어할 수 있습니다.</p>
+                                    <p>resources{} 블록 내에서 리시버로 ResourcesPackaging에 접근할 수 있습니다. 이를 통해 리소스 파일의 패키징을 설정할 수 있습니다. </p>
+                                    <p>excludes에서는 패키징할 때 제외할 리소스를 설정할 수 있다. 여기서는 META-INF 디렉터리 내에 포함된 AL2.0, LGPL2.1과 같은 파일을 제외합니다. 일반적으로 라이브러리나 종속성에 포함된 라이선스 정보로, Apache License 2.0(AL2.0)이나 GNU Lesser General Public License 2.1(LGPL2.1)과 관련된 파일을 제외하면 패키지 크기를 줄일 수 있습니다. 줄일 수 있을 것으로 기대할 수 있습니다.</p>
+                                    <div class="body">
+                                        <p>app/build.gradle.kts </p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+...
+dependencies {
+    ...                                  
+    implementation(libs.androidx.core.ktx)
+    // 생략
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    // 생략
+}
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>dependencies{} 블록 내에서 수신기로서 DependencyHandler에 접근할 수 있습니다. 이를 통해 앱이 의존하는 라이브러리를 추가할 수 있습니다.
+                                        implementation은 앱에 통합할 라이브러리를, testImplementation은 단위 테스트(JVM에서 실행하는 테스트)에 사용할 라이브러리를, androidTestImplementation은 인스트루멘테이션 테스트(에뮬레이터나 에뮬레이터나 물리 기기에서 실행하는 안드로이드 전용 테스트)에 사용할 라이브러리를 각각 추가합니다. </p>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div class="row clearfix" id="line5">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>5. Gradle을 활용한 Now in Android앱 빌드</strong></h2>
+                        </div>
+                        <div class="body">
+                            <div class="card-body">
+                                <p>여기서는 보다 실용적인 안드로이드 앱 빌드에서 Gradle의 활용에 대해 설명합니다.
+                                    Now in Android App은 구글 공식 오픈소스로 개발된 안드로이드 앱으로 Play 스토어에 공개되어 있는 앱이며, 다양한 실습이 포함되어 있어 매우 유용하게 활용할 수 있습니다.</p>
+                                <p>이 앱을 기반으로 Gradle의 활용에 대해 알아보겠습니다.
+                                    소스 코드는 https://github.com/android/nowinandroid/tree/6b87bb210d222722c5b764802358f93ffaaf8443 시점의 코드를 참고하였습니다.</p>
+                                <br><br>
+                                <h4 class="mt-2">프로젝트 구성</h4>
+                                <p>nowinandroid는 멀티 모듈로 구성되어 있으며, 자세한 내용은 ModularizationLearningJourney.md에 설명되어 있습니다.</p>
+                                <p>루트 프로젝트의 settings.gradle.kts를 보면 많은 하위 프로젝트(모듈)가 정의되어 있음을 알 수 있습니다.</p>
+                                <div class="body">
+                                    <p>settings.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+include(":app")
+include(":app-nia-catalog")
+include(":benchmarks")
+include(":core:analytics")
+include(":core:common")
+include(":core:data")
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>또한, 같은 settings.gradle.kts의 첫 부분을 보면 convention 플러그인을 사용하고 있음을 알 수 있습니다. build-logic 디렉토리를 보면 다양한 커스텀 플러그인이 정의되어 있습니다.</p>
+                                <div class="body">
+                                    <p>settings.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+pluginManagement {
+    includeBuild("build-logic")
+    ...
+                                    </code>
+                                </pre>
+                                </div> 
+                                <br><br>
+                                <h4 class="mt-2">사용 중인 라이브러리 및 관리</h4>
+                                <p>nowinandroid에는 많은 라이브러리와 플러그인이 사용되고 있다. 그것들은 Version Catalog에서 관리되고 있으며, <a href="https://github.com/android/nowinandroid/blob/6b87bb210d222722c5b764802358f93ffaaf8443/gradle/libs.versions.toml" target="_blank">gradle/libs.versions.toml</a>을 보면 어떤 것들이 사용되고 있는지 확인할 수 있습니다.</p>
+
+                                <br><br>
+                                <h4 class="mt-2">AndroidApplicationConventionPlugin</h4>
+                                <p>convention 플러그인으로 다양한 커스텀 플러그인이 존재합니다. 그 중 하나인 AndroidApplicationConventionPlugin을 예로 들어 살펴보겠습니다. 이 플러그인은 안드로이드 앱 빌드와 관련된 몇 가지 설정을 하는 역할을 합니다.</p>
+
+                                <p>먼저 <a href="https://github.com/android/nowinandroid/blob/6b87bb210d222722c5b764802358f93ffaaf8443/build-logic/convention/build.gradle.kts" target="_blank">build-logic/convention/build.gradle.kts</a> 파일을 엽니다. 그리고 AndroidApplicationConventionPlugin으로 검색하면 다음과 같은 코드를 찾을 수 있습니다.</p>       
+                                <div class="body">
+                                    <p>nowinandroid/build-logic/convention/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+gradlePlugin {
+    plugins {
+    ...
+        register("androidApplication") {
+            id = "nowinandroid.android.application"
+            implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        ...
+    }
+    ....
+}
+                                    </code>
+                                </pre>
+                                </div> 
+                                <p>AndroidApplicationConventionPlugin 이 nowinandroid.android.application 이라는 ID로 등록되어 있는 것을 확인할 수 있습니다.</p>
+                                <p>다음으로 Version Catalog를 정의하고 있는 gradle/libs.versions.toml 파일을 엽니다. 이 파일에는 프로젝트에서 사용할 라이브러리와 플러그인이 선언되어 있으며, 앞서 언급한 ID인 nowinandroid.android.application도 포함되어 있음을 알 수 있습니다.</p>
+                                <div class="body">
+                                    <p>nowinandroid/gradle/libs.versions.toml</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+# Plugins defined by this project
+nowinandroid-android-application = { id = "nowinandroid.android.application" }
+...
+                                    </code>
+                                </pre>
+                                </div> 
+
+                                <p>dependencyResolutionManagement{}는 프로젝트 전체 라이브러리의 의존성 해결에 사용할 리포지토리를 설정합니다.</p>       
+                                <p>repositoriesMode는 리포지토리 설정을 몇 가지 모드 중에서 설정할 수 있습니다. repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)를 설정하면, settings.gradle.kts 이외의 다른 build.gradle.kts 등으로 리포지토리를 설정하려고 하면 빌드 에러를 발생시킵니다.</p> 
+                                <p>여기서는 라이브러리 의존성 해결 대상으로 repositories{}에 의해 google(), mavenCentral()이 설정되어 있습니다.</p> 
+                                <div class="body">
+                                    <p>buildSrc/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+rootProject.name = "FirstApp"
+include(":app")
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>이로써 각 모듈의 build.gradle.kts에서 libs.plugins.nowinandroid.android.application으로 이 플러그인을 참조할 수 있게 되었습니다.</p>  
+                                <p>libs.plugins.nowinandroid.android.application으로 프로젝트 전체에서 검색하면 해당 플러그인을 사용하는 모듈을 찾을 수 있습니다. 예를 들어 app 모듈에서 사용되고 있음을 알 수 있습니다.</p>  
+                                <div class="body">
+                                    <p>nowinandroid/app/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+plugins {
+    alias(libs.plugins.nowinandroid.android.application)
+    ...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>이제 AndroidApplicationConventionPlugin의 역할을 확인해 봅시다. 소스코드는 https://github.com/android/nowinandroid/blob/6b87bb210d222722c5b764802358f93ffaaf8443/build-logic/convention/src/main/ kotlin/AndroidApplicationConventionPlugin.kt 에 있습니다. 위에서부터 순서대로 발췌하여 살펴보겠습니다.</p>  
+                                <div class="body">
+                                    <p>nowinandroid/build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+...
+    with(pluginManager) {
+        apply("com.android.application")
+        apply("org.jetbrains.kotlin.android")
+        apply("nowinandroid.android.lint")
+        apply("com.dropbox.dependency-guard")
+    }
+...
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>여기서는 pluginManager를 사용하여 아래의 플러그인을 추가하고 있습니다.</p> 
+                                <p>- com.android.application: Android Gradle plugin (안드로이드 애플리케이션 프로젝트로서 필요한 플러그인)</p> 
+                                <p>- org.jetbrains.kotlin.android: Kotlin plugins for Gradle (안드로이드 애플리케이션에서 Kotlin을 사용하기 위한 플러그인)</p> 
+                                <p>- nowinandroid.android.lint: nowinandroid 안에 정의되어 있는 convention 플러그인 (커스텀 Lint 규칙을 적용하는 플러그인)</p> 
+                                <p>- com.dropbox.dependency-guard: 의존성 가드(Dependency Guard) (Dropbox가 제공하는 의존성 변경을 모니터링하는 플러그인)</p> 
+                                <p>각 플러그인에 대한 자세한 내용은 각 링크에서 확인할 수 있습니다.</p> 
+                                <p>또한 nowinandroid.android.lint는 AndroidApplicationConventionPlugin과 마찬가지로 nowinandroid 안에 정의된 플러그인이므로 build-logic 안에서 찾을 수 있습니다.</p> 
+                                <div class="body">
+                                    <p>nowinandroid/build-logic/convention/build.gradle.kts</p>
+                                    <pre class=" language-html">
+                                    <code class=" language-html">
+gradlePlugin {
+    plugins {
+        ...
+        register("androidLint") {
+            id = "nowinandroid.android.lint"
+            implementationClass = "AndroidLintConventionPlugin"
+        }
+        ...
+    }
+    ....
+}
+                                    </code>
+                                </pre>
+                                </div>  
+                                <p>구현은 AndroidLintConventionPlugin 클래스에 있으므로, 자세한 내용이 궁금하다면 해당 클래스를 살펴봅시다.
+                                    AndroidApplicationConventionPlugin의 코드를 계속 살펴보겠습니다.</p> 
+                                    <div class="body">
+                                        <p>nowinandroid/build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt</p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+...
+extensions.configure<ApplicationExtension> {
+    configureKotlinAndroid(this)
+    defaultConfig.targetSdk = 34
+    @Suppress("UnstableApiUsage")
+    testOptions.animationsDisabled = true
+    configureGradleManagedDevices(this)
+}
+...
+                                        </code>
+                                    </pre>
+                                    </div>  
+                                    <p>extensions.configure<ApplicationExtension>{}에서는 ApplicationExtension을 사용하여 안드로이드 앱에 대한 설정을 하고 있습니다.</p> 
+                                    <p>먼저 defaultConfig.targetSdk = 34에서 Target SDK를 34로 설정한 것을 확인할 수 있습니다. testOptions.animationsDisabled = true는 인스트루멘테이션 테스트에서 애니메이션을 비활성화합니다. 이를 통해 UI 테스트가 안정화될 것으로 기대할 수 있습니다.</p> 
+                                    <p>configureKotlinAndroid(this)와 configureGradleManagedDevices(this)는 프로젝트 내에서 정의한 확장 함수입니다. 각각의 구현은 다음과 같습니다.</p> 
+                                    <div class="body">
+                                        <p>nowinandroid/build-logic/convention/src/main/kotlin/com/google/samples/apps/nowinandroid/KotlinAndroid.kt</p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+internal fun Project.configureKotlinAndroid(
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
+) {
+    commonExtension.apply {
+        compileSdk = 34
+                                            
+        defaultConfig {
+            minSdk = 21
+        }
+                                            
+    compileOptions {
+        // Up to Java 11 APIs are available through desugaring
+        // https://developer.android.com/studio/write/java11-minimal-support-table
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
+    }
+  }
+                                            
+    configureKotlin<KotlinAndroidProjectExtension>()
+                                            
+    dependencies {
+        add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
+    }
+}
+                                        </code>
+                                    </pre>
+                                    </div> 
+                                    <p>여기서는 compileSdk, minSDK, Java 버전 등을 설정합니다.</p>
+                                    <div class="body">
+                                        <p>nowinandroid/build-logic/convention/src/main/kotlin/com/google/samples/apps/nowinandroid</p>
+                                        <pre class=" language-html">
+                                        <code class=" language-html">
+/GradleManagedDevices.kt
+internal fun configureGradleManagedDevices(
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
+) {
+    val pixel4 = DeviceConfig("Pixel 4", 30, "aosp-atd")
+    val pixel6 = DeviceConfig("Pixel 6", 31, "aosp")
+    val pixelC = DeviceConfig("Pixel C", 30, "aosp-atd")
+                                            
+    val allDevices = listOf(pixel4, pixel6, pixelC)
+    val ciDevices = listOf(pixel4, pixelC)
+                                            
+    commonExtension.testOptions {
+        managedDevices {
+            devices {
+                allDevices.forEach { deviceConfig ->
+                    maybeCreate(deviceConfig.taskName, ManagedVirtualDevice::class.java).apply {
+                        device = deviceConfig.device
+                        apiLevel = deviceConfig.apiLevel
+                        systemImageSource = deviceConfig.systemImageSource
+                    }
+                }
+            }
+            groups {
+                maybeCreate("ci").apply {
+                    ciDevices.forEach { deviceConfig ->
+                        targetDevices.add(devices[deviceConfig.taskName])
+                    }
+                }
+            }
+        }
+    }
+}
+                                        </code>
+                                    </pre>
+                                    </div> 
+                                    <p>여기서는 테스트에 사용할 디바이스를 정의하고 있는 것 같습니다.
+
+                                        이제 AndroidApplicationConventionPlugin의 나머지 코드를 살펴보겠습니다.</p>
+                                        <div class="body">
+                                            <p>nowinandroid/build-logic/convention/src/main/kotlin/AndroidApplicationConventionPlugin.kt</p>
+                                            <pre class=" language-html">
+                                            <code class=" language-html">
+...
+    extensions.configure<ApplicationAndroidComponentsExtension> {
+        configurePrintApksTask(this)
+        configureBadgingTasks(extensions.getByType<BaseExtension>(), this)
+    }
+...   
+                                            </code>
+                                        </pre>
+                                        </div> 
+
+                                <p>extensions.configure<ApplicationAndroidComponentsExtension>{}에서는 ApplicationAndroidComponentsExtension을 사용하여 빌드 변형별 커스터마이징 및 빌드 프로세스 의 태스크를 커스터마이징하고 있습니다.</p>  
+                                <p>configurePrintApksTask(this)와 configureBadgingTasks(extensions.getByType<BaseExtension>(), this)는 프로젝트 내에서 정의한 확장 함수이다. 각각의 자세한 내용은 생략하고, 앱 빌드 및 테스트 시 다양한 메타 정보를 출력하는 Gradle 태스크를 추가하는 것 같습니다.</p>
+                                <p>지금까지 AndroidApplicationConventionPlugin의 코드를 간략하게 살펴보았습니다.</p>
+                                <p>이렇게 코드를 따라가다 보면 복잡한 안드로이드 앱의 빌드 과정을 풀어갈 수 있습니다.</p>
+ 
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix" id="line6">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>6. 참고자료</strong></h2>
+                        </div>
+
+                        <div class="body">
+                            <div class="card-body">
+
+                                <p>본 강좌에 기재하는데 있어서 참고로 한 문서등의 링크입니다.</p>
+                                    <br>
+                                    <ul>
+                                        <li><strong><a href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank">Gradle User Manual</a></strong></li>
+                                        <li><strong><a href="https://developer.android.com/build/gradle-build-overview?hl=ko" target="_blank">Android Gradle Plugin</a></strong></li>
+                                        <li><strong><a href="https://github.com/android/nowinandroid" target="_blank">nowinandroid</a></strong></li>                                
+                                    </ul>   
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+    <script src="assets/js/prism.js"></script>
+    <script src="assets/js/app.min.js"></script>
+    <!-- Custom Js -->
+    <script src="assets/js/admin.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Add smooth scrolling to all links
+            $("a").on('click', function (event) {
+                // Make sure this.hash has a value before overriding default behavior
+                if (this.hash !== "") {
+                    // Prevent default anchor click behavior
+                    event.preventDefault();
+                    // Store hash
+                    var hash = this.hash;
+                    // Using jQuery's animate() method to add smooth page scroll
+                    // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800, function () {
+                        // Add hash (#) to URL when done scrolling (default click behavior)
+                        window.location.hash = hash;
+                    });
+                } // End if
+            });
+        });
+    </script>
+</body>
+
+</html>
